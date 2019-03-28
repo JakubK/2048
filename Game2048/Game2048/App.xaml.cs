@@ -11,7 +11,8 @@ namespace Game2048
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var bootstrapper = new AppBootstrapper();
+            MainPage = bootstrapper.CreateMainPage();
         }
 
         protected override void OnStart()
