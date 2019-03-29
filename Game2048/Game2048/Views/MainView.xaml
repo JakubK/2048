@@ -7,7 +7,34 @@
 		     xmlns:vms="clr-namespace:Game2048.ViewModels;assembly=Game2048" 
              x:Class="Game2048.Views.MainView"
              NavigationPage.HasNavigationBar="False">
-      <StackLayout>
-          <Label HorizontalOptions="Center" VerticalOptions="CenterAndExpand"  Text="Hello Xamarin.Forms!" />
-      </StackLayout>
+  <StackLayout>
+    <Grid Padding="5"
+          VerticalOptions="CenterAndExpand"
+          HorizontalOptions="Center"
+          RowSpacing="5"
+          ColumnSpacing="5"
+          BackgroundColor="Red"
+          HeightRequest="300"
+          WidthRequest="300">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Button BorderWidth="0" Grid.Row="0" Grid.Column="0" Text="1"/>
+      <Button BorderWidth="0" Grid.Row="0" Grid.Column="1" Text="2"/>
+      <Button BorderWidth="0" Grid.Row="0" Grid.Column="2" Text="3"/>
+      <Button BorderWidth="0" Grid.Row="1" Grid.Column="0" Text="4"/>
+      <Button BorderWidth="0" Grid.Row="1" Grid.Column="1" Text="5"/>
+      <Button BorderWidth="0" Grid.Row="1" Grid.Column="2" Text="6"/>
+      <Button BorderWidth="0" Grid.Row="2" Grid.Column="0" Text="7"/>
+      <Button BorderWidth="0" Grid.Row="2" Grid.Column="1" Text="8"/>
+      <Button BorderWidth="0" Grid.Row="2" Grid.Column="2" Text="9"/>
+    </Grid>
+  </StackLayout>
 </ui:ContentPageBase>
