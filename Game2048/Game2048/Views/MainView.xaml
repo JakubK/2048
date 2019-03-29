@@ -5,6 +5,7 @@
 		     xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms" 
 		     xmlns:ui="clr-namespace:Game2048.Views;assembly=Game2048" 
 		     xmlns:vms="clr-namespace:Game2048.ViewModels;assembly=Game2048" 
+             xmlns:helpers="clr-namespace:Game2048.Helpers;assembly=Game2048"
              x:Class="Game2048.Views.MainView"
              NavigationPage.HasNavigationBar="False">
   <StackLayout>
@@ -15,17 +16,9 @@
           ColumnSpacing="5"
           BackgroundColor="Red"
           HeightRequest="300"
+          helpers:GridHelpers.ColumnCount="4"
+          helpers:GridHelpers.RowCount="4"
           WidthRequest="300">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="*"/>
-      </Grid.RowDefinitions>
       <Button BorderWidth="0" Grid.Row="0" Grid.Column="0" Text="1"/>
       <Button BorderWidth="0" Grid.Row="0" Grid.Column="1" Text="2"/>
       <Button BorderWidth="0" Grid.Row="0" Grid.Column="2" Text="3"/>
