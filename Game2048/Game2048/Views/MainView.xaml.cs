@@ -1,4 +1,6 @@
-﻿using Game2048.ViewModels;
+﻿using Game2048.Models;
+using Game2048.ViewModels;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +19,11 @@ namespace Game2048.Views
 		{
 			InitializeComponent ();
 		}
-	}
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            this.OneWayBind(ViewModel, vm => vm.Squares, v => v.Board.ItemsSource);
+        }
+    }
 }
