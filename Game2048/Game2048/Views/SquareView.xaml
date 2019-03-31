@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ui:ContentViewBase xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ui="clr-namespace:Game2048.Views;assembly=Game2048" 
+             xmlns:vms="clr-namespace:Game2048.ViewModels;assembly=Game2048"
+             x:TypeArguments="vms:SquareViewModel"
+             x:Class="Game2048.Views.SquareView">
+  <Button Text="{Binding Value}" x:Name="SquareButton" BorderWidth="0"></Button>
+</ui:ContentViewBase>

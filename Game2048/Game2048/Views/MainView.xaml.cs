@@ -18,7 +18,7 @@ namespace Game2048.Views
 		public MainView ()
 		{
 			InitializeComponent ();
-		}
+        }
 
         protected override void OnAppearing()
         {
