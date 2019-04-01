@@ -23,6 +23,12 @@ namespace Game2048.Views
         {
             base.OnAppearing();
             this.OneWayBind(ViewModel, vm => vm.Squares, v => v.Board.ItemsSource);
+
+            this.BindCommand(ViewModel, vm => vm.MoveLeft, v => v.LeftBtn);
+            this.BindCommand(ViewModel, vm => vm.MoveRight, v => v.RightBtn);
+            this.BindCommand(ViewModel, vm => vm.MoveDown, v => v.DownBtn);
+            this.BindCommand(ViewModel, vm => vm.MoveUp, v => v.UpBtn);
+
         }
     }
 }

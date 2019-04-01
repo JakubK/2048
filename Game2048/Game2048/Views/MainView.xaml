@@ -32,5 +32,11 @@
         </DataTemplate>
       </controls:ItemsControl.ItemsLayout>
     </controls:ItemsControl>
+    <StackLayout BackgroundColor="Gray" HorizontalOptions="Center" Orientation="Horizontal">
+      <Button x:Name="LeftBtn" Text="Left"/>
+      <Button x:Name="UpBtn" Text="Up"/>
+      <Button x:Name="RightBtn" Text="Right"/>
+      <Button x:Name="DownBtn" Text="Down"/>
+    </StackLayout>
   </StackLayout>
 </ui:ContentPageBase>
