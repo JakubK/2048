@@ -8,9 +8,26 @@ namespace Game2048.ViewModels
 {
     public class SquareViewModel : ViewModelBase
     {
-        public int X { get; set; }
-        public int Y { get; set; }
-        public int Value { get; set; }
+        private int x;
+        public int X
+        {
+            get => x;
+            set => this.RaiseAndSetIfChanged(ref x, value);
+        }
+
+        private int y;
+        public int Y
+        {
+            get => y;
+            set => this.RaiseAndSetIfChanged(ref y, value);
+        }
+
+        private int val;
+        public int Value
+        {
+            get => val;
+            set => this.RaiseAndSetIfChanged(ref val, value);
+        }
 
         public SquareViewModel()
         {
@@ -20,7 +37,7 @@ namespace Game2048.ViewModels
         {
             this.X = x;
             this.Y = y;
-            this.Value = value;
+            this.Value = value;  
         }
     }
 }
