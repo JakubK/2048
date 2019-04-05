@@ -23,11 +23,10 @@ namespace Game2048.ViewModels
         {
             Squares = new ObservableCollection<SquareViewModel>();
 
-            Squares.Add(new SquareViewModel() { X = 0, Y = 0, Value = 2 });
+            Squares.Add(new SquareViewModel() { X = 0, Y = 0, Value = 4 });
             Squares.Add(new SquareViewModel() { X = 1, Y = 0, Value = 2 });
-            Squares.Add(new SquareViewModel() { X = 2, Y = 1, Value = 2 });
-            Squares.Add(new SquareViewModel() { X = 0, Y = 2, Value = 2 });
-            Squares.Add(new SquareViewModel() { X = 3, Y = 2, Value = 4 });
+            Squares.Add(new SquareViewModel() { X = 2, Y = 0, Value = 2 });
+            Squares.Add(new SquareViewModel() { X = 3, Y = 0, Value = 4 });
 
             MoveLeft = ReactiveCommand.Create(() =>  MoveToLeft());
             MoveRight = ReactiveCommand.Create(() => MoveToRight());
@@ -75,12 +74,13 @@ namespace Game2048.ViewModels
 
                         if(neighbourElement != null)
                         {
-                            if(neighbourElement.Value == item.Value)
+                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
                             {
                                 neighbourElement.Value *= 2;
+                                neighbourElement.CreatedInThisTurn = true;
                                 Squares.Remove(item);
-                                substituteCollection = true;
 
+                                substituteCollection = true;
                                 finishedMovingItem = true;
                             }
                             else
@@ -94,6 +94,11 @@ namespace Game2048.ViewModels
                         }
                     }
                 }
+            }
+
+            foreach (SquareViewModel item in row)
+            {
+                item.CreatedInThisTurn = false;
             }
 
             if (substituteCollection)
@@ -135,12 +140,14 @@ namespace Game2048.ViewModels
 
                         if (neighbourElement != null)
                         {
-                            if (neighbourElement.Value == item.Value)
+                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
                             {
                                 neighbourElement.Value *= 2;
+                                neighbourElement.CreatedInThisTurn = true;
+                            
                                 Squares.Remove(item);
-                                substituteCollection = true;
 
+                                substituteCollection = true;
                                 finishedMovingItem = true;
                             }
                             else
@@ -155,6 +162,12 @@ namespace Game2048.ViewModels
                     }
                 }
             }
+
+            foreach (SquareViewModel item in row)
+            {
+                item.CreatedInThisTurn = false;
+            }
+
             if (substituteCollection)
                 SubstituteCollection();
         }
@@ -194,12 +207,13 @@ namespace Game2048.ViewModels
 
                         if (neighbourElement != null)
                         {
-                            if (neighbourElement.Value == item.Value)
+                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
                             {
                                 neighbourElement.Value *= 2;
                                 Squares.Remove(item);
-                                substituteCollection = true;
+                                neighbourElement.CreatedInThisTurn = true;
 
+                                substituteCollection = true;
                                 finishedMovingItem = true;
                             }
                             else
@@ -214,6 +228,12 @@ namespace Game2048.ViewModels
                     }
                 }
             }
+
+            foreach (SquareViewModel item in col)
+            {
+                item.CreatedInThisTurn = false;
+            }
+
             if (substituteCollection)
                 SubstituteCollection();
         }
@@ -254,12 +274,13 @@ namespace Game2048.ViewModels
 
                         if (neighbourElement != null)
                         {
-                            if (neighbourElement.Value == item.Value)
+                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
                             {
                                 neighbourElement.Value *= 2;
                                 Squares.Remove(item);
-                                substituteCollection = true;
+                                neighbourElement.CreatedInThisTurn = true;
 
+                                substituteCollection = true;
                                 finishedMovingItem = true;
                             }
                             else
@@ -274,6 +295,12 @@ namespace Game2048.ViewModels
                     }
                 }
             }
+
+            foreach (SquareViewModel item in col)
+            {
+                item.CreatedInThisTurn = false;
+            }
+
             if (substituteCollection)
                 SubstituteCollection();
         }
