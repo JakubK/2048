@@ -1,4 +1,5 @@
-﻿using Game2048.ViewModels;
+﻿using Game2048.Services;
+using Game2048.ViewModels;
 using Game2048.Views;
 using ReactiveUI;
 using ReactiveUI.XamForms;
@@ -17,8 +18,10 @@ namespace Game2048
         public AppBootstrapper()
         {
             Router = new RoutingState();
+
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
+            Locator.CurrentMutable.Register(() => new BoardPreparer(), typeof(IBoardPreparer));
 
             this
                 .Router

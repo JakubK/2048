@@ -1,7 +1,9 @@
 ﻿using DynamicData;
+using Game2048.Services;
 using Game2048.ViewModels.Base;
 using ReactiveUI;
 using ReactiveUI.Legacy;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,14 +21,10 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
-        public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
+        public MainViewModel(IScreen hostScreen = null, IBoardPreparer boardPreparer = null) : base(hostScreen)
         {
-            Squares = new ObservableCollection<SquareViewModel>();
-
-            Squares.Add(new SquareViewModel() { X = 0, Y = 0, Value = 4 });
-            Squares.Add(new SquareViewModel() { X = 1, Y = 0, Value = 2 });
-            Squares.Add(new SquareViewModel() { X = 2, Y = 0, Value = 2 });
-            Squares.Add(new SquareViewModel() { X = 3, Y = 0, Value = 4 });
+            boardPreparer = Locator.Current.GetService<IBoardPreparer>();
+            Squares = boardPreparer.PrepareSquares(4, 4);
 
             MoveLeft = ReactiveCommand.Create(() =>  MoveToLeft());
             MoveRight = ReactiveCommand.Create(() => MoveToRight());
