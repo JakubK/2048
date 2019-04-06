@@ -24,12 +24,15 @@ namespace Game2048.ViewModels
         public MainViewModel(IScreen hostScreen = null, IBoardPreparer boardPreparer = null) : base(hostScreen)
         {
             boardPreparer = Locator.Current.GetService<IBoardPreparer>();
+            BoardWidth = 4;
+            BoardHeight = 4;
             Squares = boardPreparer.PrepareSquares(4, 4);
 
-            MoveLeft = ReactiveCommand.Create(() =>  MoveToLeft());
-            MoveRight = ReactiveCommand.Create(() => MoveToRight());
-            MoveUp = ReactiveCommand.Create(() => MoveToTop());
-            MoveDown = ReactiveCommand.Create(() => MoveToBottom());
+            MoveLeft = ReactiveCommand.Create(() =>  PushHorizontally(-1));
+            MoveRight = ReactiveCommand.Create(() => PushHorizontally(1));
+
+            MoveUp = ReactiveCommand.Create(() => PushVertically(-1));
+            MoveDown = ReactiveCommand.Create(() => PushVertically(1));
         }
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
@@ -37,90 +40,33 @@ namespace Game2048.ViewModels
         public ReactiveCommand<Unit, Unit> MoveUp { get; }
         public ReactiveCommand<Unit, Unit> MoveDown { get; }
 
-        private void MoveToLeft()
+        public int BoardWidth { get; set; }
+        public int BoardHeight { get; set; }
+
+        private void PushHorizontally(int direction) 
         {
             var rows = Squares.GroupBy(r => r.Y).ToList();
             foreach(var row in rows)
             {
-                MoveRowToLeft(row.OrderBy(x => x.X).ToList());
+                if (direction < 0)
+                    PushRowHorizontally(row.OrderBy(x => x.X).ToList(),direction);
+                else
+                    PushRowHorizontally(row.OrderByDescending(x => x.X).ToList(), direction);
             }
         }
 
-        private void MoveRowToLeft(List<SquareViewModel> row)
+        private void PushRowHorizontally(List<SquareViewModel> row, int direction)
         {
             bool substituteCollection = false;
-            foreach(SquareViewModel item in row)
-            {
-                bool finishedMovingItem = false;
-                while(!finishedMovingItem)
-                {
-                    if(item.X == 0)
-                    {
-                        finishedMovingItem = true;
-                    }
-                    else
-                    {
-                        SquareViewModel neighbourElement = null;
-                        for(int i = 0;i < Squares.Count;i++)
-                        {
-                            if (Squares[i].Y == item.Y && Squares[i].X == item.X - 1)
-                            {
-                                neighbourElement = Squares[i];
-                                break;
-                            }
-                        }
+            int origin = direction > 0 ? (BoardWidth-1) : 0;
+            int diff = direction > 0 ? 1 : -1;
 
-                        if(neighbourElement != null)
-                        {
-                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
-                            {
-                                neighbourElement.Value *= 2;
-                                neighbourElement.CreatedInThisTurn = true;
-                                Squares.Remove(item);
-
-                                substituteCollection = true;
-                                finishedMovingItem = true;
-                            }
-                            else
-                            {
-                                finishedMovingItem = true;
-                            }
-                        }
-                        else
-                        {
-                            item.X--;
-                        }
-                    }
-                }
-            }
-
-            foreach (SquareViewModel item in row)
-            {
-                item.CreatedInThisTurn = false;
-            }
-
-            if (substituteCollection)
-                SubstituteCollection();
-        }
-
-        private void MoveToRight()
-        {
-            var rows = Squares.GroupBy(r => r.Y).ToList();
-            foreach (var row in rows)
-            {
-                MoveRowToRight(row.OrderByDescending(x => x.X).ToList());
-            }
-        }
-
-        private void MoveRowToRight(List<SquareViewModel> row)
-        {
-            bool substituteCollection = false;
             foreach (SquareViewModel item in row)
             {
                 bool finishedMovingItem = false;
                 while (!finishedMovingItem)
                 {
-                    if (item.X == 3)
+                    if (item.X == origin)
                     {
                         finishedMovingItem = true;
                     }
@@ -129,7 +75,7 @@ namespace Game2048.ViewModels
                         SquareViewModel neighbourElement = null;
                         for (int i = 0; i < Squares.Count; i++)
                         {
-                            if (Squares[i].Y == item.Y && Squares[i].X == item.X + 1)
+                            if (Squares[i].Y == item.Y && Squares[i].X == item.X + diff)
                             {
                                 neighbourElement = Squares[i];
                                 break;
@@ -142,7 +88,6 @@ namespace Game2048.ViewModels
                             {
                                 neighbourElement.Value *= 2;
                                 neighbourElement.CreatedInThisTurn = true;
-                            
                                 Squares.Remove(item);
 
                                 substituteCollection = true;
@@ -155,7 +100,7 @@ namespace Game2048.ViewModels
                         }
                         else
                         {
-                            item.X++;
+                            item.X += diff;
                         }
                     }
                 }
@@ -170,24 +115,30 @@ namespace Game2048.ViewModels
                 SubstituteCollection();
         }
 
-        private void MoveToBottom()
+        private void PushVertically(int direction)
         {
             var cols = Squares.GroupBy(r => r.X).ToList();
             foreach (var col in cols)
             {
-                MoveColToBottom(col.OrderByDescending(x => x.Y).ToList());                
+                if (direction < 0)
+                    PushColVertically(col.OrderBy(x => x.Y).ToList(), direction);
+                else
+                    PushColVertically(col.OrderByDescending(x => x.Y).ToList(), direction);
             }
         }
 
-        private void MoveColToBottom(List<SquareViewModel> col)
+        private void PushColVertically(List<SquareViewModel> col, int direction)
         {
             bool substituteCollection = false;
+            int origin = direction > 0 ? (BoardHeight-1) : 0;
+            int diff = direction > 0 ? 1 : -1;
+
             foreach (SquareViewModel item in col)
             {
                 bool finishedMovingItem = false;
                 while (!finishedMovingItem)
                 {
-                    if (item.Y == 3)
+                    if (item.Y == origin)
                     {
                         finishedMovingItem = true;
                     }
@@ -196,7 +147,7 @@ namespace Game2048.ViewModels
                         SquareViewModel neighbourElement = null;
                         for (int i = 0; i < Squares.Count; i++)
                         {
-                            if (Squares[i].X == item.X && Squares[i].Y == item.Y + 1)
+                            if (Squares[i].X == item.X && Squares[i].Y == item.Y + diff)
                             {
                                 neighbourElement = Squares[i];
                                 break;
@@ -221,74 +172,7 @@ namespace Game2048.ViewModels
                         }
                         else
                         {
-                            item.Y++;
-                        }
-                    }
-                }
-            }
-
-            foreach (SquareViewModel item in col)
-            {
-                item.CreatedInThisTurn = false;
-            }
-
-            if (substituteCollection)
-                SubstituteCollection();
-        }
-
-
-        private void MoveToTop()
-        {
-            var cols = Squares.GroupBy(r => r.X).ToList();
-            foreach (var col in cols)
-            {
-                MoveColToTop(col.OrderBy(x => x.Y).ToList());
-            }
-        }
-
-        private void MoveColToTop(List<SquareViewModel> col)
-        {
-            bool substituteCollection = false;
-            foreach (SquareViewModel item in col)
-            {
-                bool finishedMovingItem = false;
-                while (!finishedMovingItem)
-                {
-                    if (item.Y == 0)
-                    {
-                        finishedMovingItem = true;
-                    }
-                    else
-                    {
-                        SquareViewModel neighbourElement = null;
-                        for (int i = 0; i < Squares.Count; i++)
-                        {
-                            if (Squares[i].X == item.X && Squares[i].Y == item.Y - 1)
-                            {
-                                neighbourElement = Squares[i];
-                                break;
-                            }
-                        }
-
-                        if (neighbourElement != null)
-                        {
-                            if (neighbourElement.Value == item.Value && !neighbourElement.CreatedInThisTurn)
-                            {
-                                neighbourElement.Value *= 2;
-                                Squares.Remove(item);
-                                neighbourElement.CreatedInThisTurn = true;
-
-                                substituteCollection = true;
-                                finishedMovingItem = true;
-                            }
-                            else
-                            {
-                                finishedMovingItem = true;
-                            }
-                        }
-                        else
-                        {
-                            item.Y--;
+                            item.Y += diff;
                         }
                     }
                 }
