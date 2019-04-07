@@ -3,11 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Xamarin.Forms;
 
 namespace Game2048.Services
 {
-    public interface IBoardPreparer
+    public interface IBoardSeeder
     {
-        ObservableCollection<SquareViewModel> PrepareSquares(int boardWidth, int boardHeight);
+        ObservableCollection<SquareViewModel> FillWithSquares(MainViewModel board, int count);
     }
 }
