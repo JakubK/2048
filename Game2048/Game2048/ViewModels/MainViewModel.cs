@@ -21,18 +21,42 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
-        public MainViewModel(IScreen hostScreen = null, IBoardPreparer boardPreparer = null) : base(hostScreen)
+        public MainViewModel(IScreen hostScreen = null, IBoardSeeder boardPreparer = null) : base(hostScreen)
         {
-            boardPreparer = Locator.Current.GetService<IBoardPreparer>();
+            boardPreparer = Locator.Current.GetService<IBoardSeeder>();
             BoardWidth = 4;
             BoardHeight = 4;
-            Squares = boardPreparer.PrepareSquares(4, 4);
+            Squares = new ObservableCollection<SquareViewModel>();
+            Squares = boardPreparer.FillWithSquares(this, 2);
 
-            MoveLeft = ReactiveCommand.Create(() =>  PushHorizontally(-1));
-            MoveRight = ReactiveCommand.Create(() => PushHorizontally(1));
+            MoveLeft = ReactiveCommand.Create(() => 
+            {
+                PushHorizontally(-1);
+                Squares = boardPreparer.FillWithSquares(this, 1);
+                SubstituteCollection();
+            });
 
-            MoveUp = ReactiveCommand.Create(() => PushVertically(-1));
-            MoveDown = ReactiveCommand.Create(() => PushVertically(1));
+
+            MoveRight = ReactiveCommand.Create(() =>
+            {
+                PushHorizontally(1);
+                Squares = boardPreparer.FillWithSquares(this, 1);
+                SubstituteCollection();
+            });
+
+            MoveUp = ReactiveCommand.Create(() =>
+            {
+                PushVertically(-1);
+                Squares = boardPreparer.FillWithSquares(this, 1);
+                SubstituteCollection();
+            });
+
+            MoveDown = ReactiveCommand.Create(() =>
+            {
+                PushVertically(1);
+                Squares = boardPreparer.FillWithSquares(this, 1);
+                SubstituteCollection();
+            });
         }
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
