@@ -8,6 +8,13 @@ namespace Game2048.ViewModels
 {
     public class SquareViewModel : ViewModelBase
     {
+        private bool appeared;
+        public bool Appeared
+        {
+            get => appeared;
+            set => this.RaiseAndSetIfChanged(ref appeared, value);
+        }
+
         private bool createdInThisTurn;
         public bool CreatedInThisTurn
         {
@@ -38,13 +45,15 @@ namespace Game2048.ViewModels
 
         public SquareViewModel()
         {
+            this.Appeared = true;
         }
 
         public SquareViewModel(int x, int y,int value)
         {
             this.X = x;
             this.Y = y;
-            this.Value = value;  
+            this.Value = value;
+            this.Appeared = true;
         }
     }
 }
