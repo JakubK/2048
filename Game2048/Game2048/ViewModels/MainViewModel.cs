@@ -14,6 +14,8 @@ namespace Game2048.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
+        private IBoardSeeder boardSeeder;
+
         private ObservableCollection<SquareViewModel> squares;
         public ObservableCollection<SquareViewModel> Squares
         {
@@ -21,40 +23,41 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
-        public MainViewModel(IScreen hostScreen = null, IBoardSeeder boardPreparer = null) : base(hostScreen)
+        public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
         {
-            boardPreparer = Locator.Current.GetService<IBoardSeeder>();
+            boardSeeder = Locator.Current.GetService<IBoardSeeder>();
+            
             BoardWidth = 4;
             BoardHeight = 4;
 
             Squares = new ObservableCollection<SquareViewModel>();
-            Squares = boardPreparer.FillWithSquares(this, 2);
+            Squares = boardSeeder.FillWithSquares(this, 2);
 
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 PushHorizontally(-1);
-                Squares = boardPreparer.FillWithSquares(this, 1);
+                Squares = boardSeeder.FillWithSquares(this, 1);
                 SubstituteCollection();
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
                 PushHorizontally(1);
-                Squares = boardPreparer.FillWithSquares(this, 1);
+                Squares = boardSeeder.FillWithSquares(this, 1);
                 SubstituteCollection();
             });
 
             MoveUp = ReactiveCommand.Create(() =>
             {
                 PushVertically(-1);
-                Squares = boardPreparer.FillWithSquares(this, 1);
+                Squares = boardSeeder.FillWithSquares(this, 1);
                 SubstituteCollection();
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
                 PushVertically(1);
-                Squares = boardPreparer.FillWithSquares(this, 1);
+                Squares = boardSeeder.FillWithSquares(this, 1);
                 SubstituteCollection();
             });
         }
@@ -81,20 +84,20 @@ namespace Game2048.ViewModels
 
         private void PushRow(List<SquareViewModel> row, int direction)
         {
-            bool substituteCollection = false;
             int pos = 0;
             row[0].X = direction > 0 ? 3 : 0;
             pos = 0;
-
             for (int i = 1; i < row.Count; i++)
             {
                 if (row[i].Value == row[pos].Value && !row[pos].CreatedInThisTurn)
                 {
                     row[pos].Value *= 2;
                     row[pos].CreatedInThisTurn = true;
-                    
+
                     Squares.Remove(row[i]);
-                    substituteCollection = true;
+                    row.RemoveAt(i);
+
+                    i--;
                 }
                 else
                 {
@@ -103,13 +106,11 @@ namespace Game2048.ViewModels
                 }
             }
 
+       
             foreach (SquareViewModel item in row)
             {
                 item.CreatedInThisTurn = false;
             }
-
-            if (substituteCollection)
-                SubstituteCollection();
         }
 
         private void PushVertically(int direction)
@@ -126,7 +127,6 @@ namespace Game2048.ViewModels
 
         private void PushCol(List<SquareViewModel> col, int direction)
         {
-            bool substituteCollection = false;
             int pos = 0;
             col[0].Y = direction > 0 ? 3 : 0;
             pos = 0;
@@ -137,8 +137,11 @@ namespace Game2048.ViewModels
                 {
                     col[pos].Value *= 2;
                     col[pos].CreatedInThisTurn = true;
+
                     Squares.Remove(col[i]);
-                    substituteCollection = true;
+                    col.RemoveAt(i);
+
+                    i--;
                 }
                 else
                 {
@@ -151,9 +154,6 @@ namespace Game2048.ViewModels
             {
                 item.CreatedInThisTurn = false;
             }
-
-            if (substituteCollection)
-                SubstituteCollection();
         }
 
         private void SubstituteCollection()
