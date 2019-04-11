@@ -37,28 +37,23 @@ namespace Game2048.ViewModels
             {
                 PushHorizontally(-1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
-                SubstituteCollection();
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
                 PushHorizontally(1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
-                SubstituteCollection();
             });
-
             MoveUp = ReactiveCommand.Create(() =>
             {
                 PushVertically(-1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
-                SubstituteCollection();
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
                 PushVertically(1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
-                SubstituteCollection();
             });
         }
 
@@ -154,16 +149,6 @@ namespace Game2048.ViewModels
             {
                 item.CreatedInThisTurn = false;
             }
-        }
-
-        private void SubstituteCollection()
-        {
-            ObservableCollection<SquareViewModel> squareCopy = new ObservableCollection<SquareViewModel>();
-            for (int i = 0; i < Squares.Count; i++)
-            {
-                squareCopy.Add(Squares[i]);
-            }
-            Squares = squareCopy;
         }
     }
 }

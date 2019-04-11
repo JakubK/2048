@@ -29,6 +29,12 @@ namespace Game2048.Views
             this.BindCommand(ViewModel, vm => vm.MoveDown, v => v.DownBtn);
             this.BindCommand(ViewModel, vm => vm.MoveUp, v => v.UpBtn);
 
+            ViewModel.Squares.CollectionChanged += Squares_CollectionChanged;
+        }
+
+        private void Squares_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            Board.OnItemsSourcePropertyChanged();
         }
     }
 }

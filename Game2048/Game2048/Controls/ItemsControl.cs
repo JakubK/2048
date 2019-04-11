@@ -8,7 +8,7 @@ using Xamarin.Forms;
 namespace Game2048.Controls
 {
     //Source: https://github.com/andreinitescu/XFItemsControl
-    class ItemsControl : ContentView
+    public class ItemsControl : ContentView
     {
         protected Layout<View> _itemsLayout;
 
@@ -72,7 +72,7 @@ namespace Game2048.Controls
             }
         }
 
-        void OnItemsSourcePropertyChanged()
+        public void OnItemsSourcePropertyChanged()
         {
             if (_itemsLayout == null)
             {
