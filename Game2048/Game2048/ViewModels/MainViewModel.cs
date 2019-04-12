@@ -31,29 +31,67 @@ namespace Game2048.ViewModels
             BoardHeight = 4;
 
             Squares = new ObservableCollection<SquareViewModel>();
+
             Squares = boardSeeder.FillWithSquares(this, 2);
 
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 PushHorizontally(-1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
+
+                if (Squares.Count == BoardWidth * BoardHeight)
+                {
+                    if(IsLost())
+                    {
+                        System.Diagnostics.Debug.WriteLine("Game is lost");
+                    }
+                }
+              
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
                 PushHorizontally(1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
+
+                if (Squares.Count == BoardWidth * BoardHeight)
+                {
+                    if (IsLost())
+                    {
+                        System.Diagnostics.Debug.WriteLine("Game is lost");
+                    }
+                }
+
+
             });
             MoveUp = ReactiveCommand.Create(() =>
             {
                 PushVertically(-1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
+
+                if (Squares.Count == BoardWidth * BoardHeight)
+                {
+                    if (IsLost())
+                    {
+                        System.Diagnostics.Debug.WriteLine("Game is lost");
+                    }
+                }
+
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
                 PushVertically(1);
                 Squares = boardSeeder.FillWithSquares(this, 1);
+
+                if (Squares.Count == BoardWidth * BoardHeight)
+                {
+                    if (IsLost())
+                    {
+                        System.Diagnostics.Debug.WriteLine("Game is lost");
+                    }
+                }
+
             });
         }
 
@@ -77,10 +115,43 @@ namespace Game2048.ViewModels
             }
         }
 
+        private bool IsLost()
+        {
+            var rows = Squares.GroupBy(r => r.Y).ToList();
+
+            List<SquareViewModel> list;
+            foreach (var row in rows)
+            {
+               list = row.OrderBy(x => x.X).ToList();
+               for(int i = 1;i < row.Count();i++)
+               {
+                    if(list[i].Value == list[i-1].Value)
+                    {
+                        return false;
+                    }
+               }
+            }
+            var cols = Squares.GroupBy(r => r.X).ToList();
+
+            foreach (var col in cols)
+            {
+                list = col.OrderBy(x => x.Y).ToList();
+                for (int i = 1; i < col.Count(); i++)
+                {
+                    if (list[i].Value == list[i - 1].Value)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
         private void PushRow(List<SquareViewModel> row, int direction)
         {
             int pos = 0;
-            row[0].X = direction > 0 ? 3 : 0;
+            row[0].X = direction > 0 ? (BoardWidth-1) : 0;
             pos = 0;
             for (int i = 1; i < row.Count; i++)
             {
@@ -97,7 +168,7 @@ namespace Game2048.ViewModels
                 else
                 {
                     pos++;
-                    row[i].X = direction > 0 ? 3 - pos : pos;
+                    row[i].X = direction > 0 ? (BoardWidth-1) - pos : pos;
                 }
             }
 
@@ -123,7 +194,7 @@ namespace Game2048.ViewModels
         private void PushCol(List<SquareViewModel> col, int direction)
         {
             int pos = 0;
-            col[0].Y = direction > 0 ? 3 : 0;
+            col[0].Y = direction > 0 ? (BoardHeight-1) : 0;
             pos = 0;
 
             for (int i = 1; i < col.Count; i++)
@@ -141,7 +212,7 @@ namespace Game2048.ViewModels
                 else
                 {
                     pos++;
-                    col[i].Y = direction > 0 ? 3 - pos : pos;
+                    col[i].Y = direction > 0 ? (BoardHeight-1) - pos : pos;
                 }
             }
 
