@@ -21,7 +21,7 @@ namespace Game2048
 
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
-            Locator.CurrentMutable.Register(() => new BoardSeeder(), typeof(IBoardSeeder));
+            Locator.CurrentMutable.Register(() => new Board(), typeof(IBoard));
 
             this
                 .Router

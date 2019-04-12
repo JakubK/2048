@@ -14,84 +14,62 @@ namespace Game2048.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private IBoardSeeder boardSeeder;
+        private IBoard board;
 
-        private ObservableCollection<SquareViewModel> squares;
         public ObservableCollection<SquareViewModel> Squares
         {
-            get => squares;
-            set => this.RaiseAndSetIfChanged(ref squares, value);
+            get => board.Squares;
         }
 
         public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
         {
-            boardSeeder = Locator.Current.GetService<IBoardSeeder>();
-            
+            board = Locator.Current.GetService<IBoard>();
+
             BoardWidth = 4;
             BoardHeight = 4;
 
-            Squares = new ObservableCollection<SquareViewModel>();
+            board.Init(BoardWidth, BoardHeight);
 
-            Squares = boardSeeder.FillWithSquares(this, 2);
+            board.SpawnSquare(2);
 
             MoveLeft = ReactiveCommand.Create(() => 
             {
-                PushHorizontally(-1);
-                Squares = boardSeeder.FillWithSquares(this, 1);
-
-                if (Squares.Count == BoardWidth * BoardHeight)
+                board.MoveHorizontally(-1);
+                board.SpawnSquare(1);
+                if(board.IsLost())
                 {
-                    if(IsLost())
-                    {
-                        System.Diagnostics.Debug.WriteLine("Game is lost");
-                    }
+                    System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
-              
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
-                PushHorizontally(1);
-                Squares = boardSeeder.FillWithSquares(this, 1);
-
-                if (Squares.Count == BoardWidth * BoardHeight)
+                board.MoveHorizontally(1);
+                board.SpawnSquare(1);
+                if (board.IsLost())
                 {
-                    if (IsLost())
-                    {
-                        System.Diagnostics.Debug.WriteLine("Game is lost");
-                    }
+                    System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
-
-
             });
+
             MoveUp = ReactiveCommand.Create(() =>
             {
-                PushVertically(-1);
-                Squares = boardSeeder.FillWithSquares(this, 1);
-
-                if (Squares.Count == BoardWidth * BoardHeight)
+                board.MoveVertically(-1);
+                board.SpawnSquare(1);
+                if (board.IsLost())
                 {
-                    if (IsLost())
-                    {
-                        System.Diagnostics.Debug.WriteLine("Game is lost");
-                    }
+                    System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
-
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
-                PushVertically(1);
-                Squares = boardSeeder.FillWithSquares(this, 1);
-
-                if (Squares.Count == BoardWidth * BoardHeight)
+                board.MoveVertically(1);
+                board.SpawnSquare(1);
+                if (board.IsLost())
                 {
-                    if (IsLost())
-                    {
-                        System.Diagnostics.Debug.WriteLine("Game is lost");
-                    }
+                    System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
-
             });
         }
 
@@ -101,125 +79,6 @@ namespace Game2048.ViewModels
         public ReactiveCommand<Unit, Unit> MoveDown { get; }
 
         public int BoardWidth { get; set; }
-        public int BoardHeight { get; set; }
-
-        private void PushHorizontally(int direction) 
-        {
-            var rows = Squares.GroupBy(r => r.Y).ToList();
-            foreach(var row in rows)
-            {
-                if (direction < 0)
-                    PushRow(row.OrderBy(x => x.X).ToList(), direction);
-                else
-                    PushRow(row.OrderByDescending(x => x.X).ToList(), direction);
-            }
-        }
-
-        private bool IsLost()
-        {
-            var rows = Squares.GroupBy(r => r.Y).ToList();
-
-            List<SquareViewModel> list;
-            foreach (var row in rows)
-            {
-               list = row.OrderBy(x => x.X).ToList();
-               for(int i = 1;i < row.Count();i++)
-               {
-                    if(list[i].Value == list[i-1].Value)
-                    {
-                        return false;
-                    }
-               }
-            }
-            var cols = Squares.GroupBy(r => r.X).ToList();
-
-            foreach (var col in cols)
-            {
-                list = col.OrderBy(x => x.Y).ToList();
-                for (int i = 1; i < col.Count(); i++)
-                {
-                    if (list[i].Value == list[i - 1].Value)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private void PushRow(List<SquareViewModel> row, int direction)
-        {
-            int pos = 0;
-            row[0].X = direction > 0 ? (BoardWidth-1) : 0;
-            pos = 0;
-            for (int i = 1; i < row.Count; i++)
-            {
-                if (row[i].Value == row[pos].Value && !row[pos].CreatedInThisTurn)
-                {
-                    row[pos].Value *= 2;
-                    row[pos].CreatedInThisTurn = true;
-
-                    Squares.Remove(row[i]);
-                    row.RemoveAt(i);
-
-                    i--;
-                }
-                else
-                {
-                    pos++;
-                    row[i].X = direction > 0 ? (BoardWidth-1) - pos : pos;
-                }
-            }
-
-       
-            foreach (SquareViewModel item in row)
-            {
-                item.CreatedInThisTurn = false;
-            }
-        }
-
-        private void PushVertically(int direction)
-        {
-            var cols = Squares.GroupBy(r => r.X).ToList();
-            foreach (var col in cols)
-            {
-                if (direction < 0)
-                    PushCol(col.OrderBy(x => x.Y).ToList(), direction);
-                else
-                    PushCol(col.OrderByDescending(x => x.Y).ToList(), direction);
-            }
-        }
-
-        private void PushCol(List<SquareViewModel> col, int direction)
-        {
-            int pos = 0;
-            col[0].Y = direction > 0 ? (BoardHeight-1) : 0;
-            pos = 0;
-
-            for (int i = 1; i < col.Count; i++)
-            {
-                if (col[i].Value == col[pos].Value && !col[pos].CreatedInThisTurn)
-                {
-                    col[pos].Value *= 2;
-                    col[pos].CreatedInThisTurn = true;
-
-                    Squares.Remove(col[i]);
-                    col.RemoveAt(i);
-
-                    i--;
-                }
-                else
-                {
-                    pos++;
-                    col[i].Y = direction > 0 ? (BoardHeight-1) - pos : pos;
-                }
-            }
-
-            foreach (SquareViewModel item in col)
-            {
-                item.CreatedInThisTurn = false;
-            }
-        }
+        public int BoardHeight { get; set; }       
     }
 }
