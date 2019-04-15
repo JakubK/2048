@@ -16,7 +16,7 @@
     <controls:ItemsControl InputTransparent="True" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" x:Name="Board">
       <controls:ItemsControl.ItemTemplate>
         <DataTemplate>
-            <ui:SquareView Grid.Row="{Binding Y}"  Grid.Column="{Binding X}"/>
+          <ui:SquareView Grid.Row="{Binding Y}"  Grid.Column="{Binding X}"/>
         </DataTemplate>
       </controls:ItemsControl.ItemTemplate>
       <controls:ItemsControl.ItemsLayout>
@@ -35,11 +35,5 @@
         </DataTemplate>
       </controls:ItemsControl.ItemsLayout>
     </controls:ItemsControl>
-    <StackLayout BackgroundColor="Gray" HorizontalOptions="Center" Orientation="Horizontal">
-      <Button x:Name="LeftBtn" Text="Left"/>
-      <Button x:Name="UpBtn" Text="Up"/>
-      <Button x:Name="RightBtn" Text="Right"/>
-      <Button x:Name="DownBtn" Text="Down"/>
-    </StackLayout>
   </StackLayout>
 </ui:ContentPageBase>
