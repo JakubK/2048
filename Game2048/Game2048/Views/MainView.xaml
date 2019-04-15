@@ -10,7 +10,10 @@
              x:TypeArguments="vms:MainViewModel" 
              NavigationPage.HasNavigationBar="False">
   <StackLayout>
-    <controls:ItemsControl VerticalOptions="CenterAndExpand" HorizontalOptions="Center" x:Name="Board">
+    <StackLayout.GestureRecognizers>
+      <PanGestureRecognizer x:Name="PanGesture"/>
+    </StackLayout.GestureRecognizers>
+    <controls:ItemsControl InputTransparent="True" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" x:Name="Board">
       <controls:ItemsControl.ItemTemplate>
         <DataTemplate>
             <ui:SquareView Grid.Row="{Binding Y}"  Grid.Column="{Binding X}"/>

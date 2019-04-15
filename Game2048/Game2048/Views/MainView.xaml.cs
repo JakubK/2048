@@ -30,6 +30,8 @@ namespace Game2048.Views
             this.BindCommand(ViewModel, vm => vm.MoveUp, v => v.UpBtn);
 
             ViewModel.Squares.CollectionChanged += Squares_CollectionChanged;
+
+            PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
         }
 
         private void Squares_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
