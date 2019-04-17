@@ -15,29 +15,38 @@ namespace Game2048.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private IBoard board;
+        private IBoardContainer board;
 
+        private ISquareTranslator squareTranslator;
+        private ISquareSpawner squareSpawner;
+        private IGameLostChecker gameLostChecker;
+
+
+        private ObservableCollection<SquareViewModel> squares;
         public ObservableCollection<SquareViewModel> Squares
         {
             get => board.Squares;
+            set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
         public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
         {
-            board = Locator.Current.GetService<IBoard>();
+            squareTranslator = Locator.Current.GetService<ISquareTranslator>();
+            squareSpawner = Locator.Current.GetService<ISquareSpawner>();
+            gameLostChecker = Locator.Current.GetService<IGameLostChecker>();
 
-            BoardWidth = 4;
-            BoardHeight = 4;
+            board = Locator.Current.GetService<IBoardContainer>();
+            board.Width = 4;
+            board.Height = 4;
+            board.Squares = new ObservableCollection<SquareViewModel>();
 
-            board.Init(BoardWidth, BoardHeight);
-
-            board.SpawnSquare(2);
-
+            squareSpawner.SpawnSquares(2);
             MoveLeft = ReactiveCommand.Create(() => 
             {
-                board.MoveHorizontally(-1);
-                board.SpawnSquare(1);
-                if(board.IsLost())
+                squareTranslator.TranslateHorizontally(-1);
+                squareSpawner.SpawnSquares(1);
+
+                if (gameLostChecker.IsLost())
                 {
                     System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
@@ -45,9 +54,9 @@ namespace Game2048.ViewModels
 
             MoveRight = ReactiveCommand.Create(() =>
             {
-                board.MoveHorizontally(1);
-                board.SpawnSquare(1);
-                if (board.IsLost())
+                squareTranslator.TranslateHorizontally(1);
+                squareSpawner.SpawnSquares(1);
+                if (gameLostChecker.IsLost())
                 {
                     System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
@@ -55,9 +64,9 @@ namespace Game2048.ViewModels
 
             MoveUp = ReactiveCommand.Create(() =>
             {
-                board.MoveVertically(-1);
-                board.SpawnSquare(1);
-                if (board.IsLost())
+                squareTranslator.TranslateVertically(-1);
+                squareSpawner.SpawnSquares(1);
+                if (gameLostChecker.IsLost())
                 {
                     System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
@@ -65,9 +74,9 @@ namespace Game2048.ViewModels
 
             MoveDown = ReactiveCommand.Create(() =>
             {
-                board.MoveVertically(1);
-                board.SpawnSquare(1);
-                if (board.IsLost())
+                squareTranslator.TranslateVertically(1);
+                squareSpawner.SpawnSquares(1);
+                if (gameLostChecker.IsLost())
                 {
                     System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
@@ -130,8 +139,5 @@ namespace Game2048.ViewModels
         public ReactiveCommand<Unit, Unit> MoveDown { get; }
 
         public ReactiveCommand<PanUpdatedEventArgs, Unit> SwitchMove { get; }
-
-        public int BoardWidth { get; set; }
-        public int BoardHeight { get; set; }       
     }
 }

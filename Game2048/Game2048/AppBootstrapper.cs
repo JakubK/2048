@@ -21,7 +21,11 @@ namespace Game2048
 
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
             Locator.CurrentMutable.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
-            Locator.CurrentMutable.Register(() => new Board(), typeof(IBoard));
+            Locator.CurrentMutable.RegisterConstant(new BoardContainer(), typeof(IBoardContainer));
+
+            Locator.CurrentMutable.Register(() => new GameLostChecker(), typeof(IGameLostChecker));
+            Locator.CurrentMutable.Register(() => new SquareSpawner(), typeof(ISquareSpawner));
+            Locator.CurrentMutable.Register(() => new SquareTranslator(), typeof(ISquareTranslator));
 
             this
                 .Router
