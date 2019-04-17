@@ -16,7 +16,7 @@ namespace Game2048.ViewModels
 {
     public class MainViewModel : ViewModelBase
     {
-        private IBoardContainer board;
+        public IBoardContainer board { get; private set; }
 
         private ISquareTranslator squareTranslator;
         private ISquareSpawner squareSpawner;
@@ -24,11 +24,9 @@ namespace Game2048.ViewModels
 
         private IDragReader dragReader;
 
-        private ObservableCollection<SquareViewModel> squares;
         public ObservableCollection<SquareViewModel> Squares
         {
             get => board.Squares;
-            set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
         private MoveDirection lastMove;
@@ -49,10 +47,13 @@ namespace Game2048.ViewModels
             board = Locator.Current.GetService<IBoardContainer>();
             board.Width = 4;
             board.Height = 4;
+            board.Score = 0;
             board.Squares = new ObservableCollection<SquareViewModel>();
 
             squareSpawner.SpawnSquares(2);
+
             LastMove = MoveDirection.None;
+
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 squareTranslator.TranslateHorizontally(-1);
@@ -123,7 +124,7 @@ namespace Game2048.ViewModels
         public ReactiveCommand<Unit, Unit> MoveRight { get; }
         public ReactiveCommand<Unit, Unit> MoveUp { get; }
         public ReactiveCommand<Unit, Unit> MoveDown { get; }
-
+    
         public ReactiveCommand<PanUpdatedEventArgs, Unit> SwitchMove { get; }
     }
 }

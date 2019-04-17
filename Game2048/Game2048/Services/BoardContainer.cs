@@ -21,6 +21,14 @@ namespace Game2048.Services
             }
         }
 
+        private int score;
+        public int Score
+        {
+            get => score;
+            set => this.RaiseAndSetIfChanged(ref score, value);
+        }
+
+
         public int Width { get; set; }
         public int Height { get; set; }
     }

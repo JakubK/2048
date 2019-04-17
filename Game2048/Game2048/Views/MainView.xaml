@@ -13,6 +13,7 @@
     <StackLayout.GestureRecognizers>
       <PanGestureRecognizer x:Name="PanGesture"/>
     </StackLayout.GestureRecognizers>
+    <Label x:Name="pointsLabel" HorizontalOptions="Center">Points: </Label>
     <Grid x:Name="Board"        
           InputTransparent="True"
           VerticalOptions="CenterAndExpand"

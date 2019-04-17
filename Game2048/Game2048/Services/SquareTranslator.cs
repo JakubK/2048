@@ -75,6 +75,8 @@ namespace Game2048.Services
                 if (row[i].Value == row[pos].Value && !row[pos].CreatedInThisTurn)
                 {
                     row[pos].Value *= 2;
+                    boardContainer.Score += row[pos].Value;
+
                     row[pos].CreatedInThisTurn = true;
 
                     Squares.Remove(row[i]);
@@ -141,6 +143,7 @@ namespace Game2048.Services
                 if (col[i].Value == col[pos].Value && !col[pos].CreatedInThisTurn)
                 {
                     col[pos].Value *= 2;
+                    boardContainer.Score += col[pos].Value;
                     col[pos].CreatedInThisTurn = true;
 
                     Squares.Remove(col[i]);
@@ -166,7 +169,6 @@ namespace Game2048.Services
             }
 
             lastMove = direction > 0 ? MoveDirection.Bottom : MoveDirection.Top;
-
         }
     }
 }

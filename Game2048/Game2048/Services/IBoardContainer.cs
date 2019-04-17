@@ -11,5 +11,6 @@ namespace Game2048.Services
         ObservableCollection<SquareViewModel> Squares { get; set; }
         int Width { get; set; }
         int Height { get; set; }
+        int Score { get; set; }
     }
 }
