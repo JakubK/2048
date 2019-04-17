@@ -13,27 +13,23 @@
     <StackLayout.GestureRecognizers>
       <PanGestureRecognizer x:Name="PanGesture"/>
     </StackLayout.GestureRecognizers>
-    <controls:ItemsControl InputTransparent="True" VerticalOptions="CenterAndExpand" HorizontalOptions="Center" x:Name="Board">
-      <controls:ItemsControl.ItemTemplate>
+    <Grid x:Name="Board"        
+          InputTransparent="True"
+          VerticalOptions="CenterAndExpand"
+          HorizontalOptions="Center"
+          Padding="5"
+          ColumnSpacing="5"
+          RowSpacing="5"
+          helpers:GridHelpers.ColumnCount="4"
+          helpers:GridHelpers.RowCount="4"
+          HeightRequest="300"
+          WidthRequest="300"
+          BackgroundColor="Red">
+      <BindableLayout.ItemTemplate>
         <DataTemplate>
           <ui:SquareView Grid.Row="{Binding Y}"  Grid.Column="{Binding X}"/>
         </DataTemplate>
-      </controls:ItemsControl.ItemTemplate>
-      <controls:ItemsControl.ItemsLayout>
-        <DataTemplate>
-          <ScrollView Orientation="Vertical">
-            <Grid Padding="5"
-                  ColumnSpacing="5"
-                  RowSpacing="5"
-                  helpers:GridHelpers.ColumnCount="4"
-                  helpers:GridHelpers.RowCount="4"
-                  HeightRequest="300"
-                  WidthRequest="300"
-                  BackgroundColor="Red"
-                  helpers:LayoutHelpers.IsItemsHost="True" />
-          </ScrollView>
-        </DataTemplate>
-      </controls:ItemsControl.ItemsLayout>
-    </controls:ItemsControl>
+      </BindableLayout.ItemTemplate>
+    </Grid>
   </StackLayout>
 </ui:ContentPageBase>

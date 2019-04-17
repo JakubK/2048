@@ -22,16 +22,12 @@ namespace Game2048.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            this.OneWayBind(ViewModel, vm => vm.Squares, v => v.Board.ItemsSource);
 
-            ViewModel.Squares.CollectionChanged += Squares_CollectionChanged;
+            this.WhenAny(x => x.ViewModel.Squares, x => x.Value)
+                .Subscribe(x => BindableLayout.SetItemsSource(Board, x));
 
             PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
         }
 
-        private void Squares_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            Board.OnItemsSourcePropertyChanged();
-        }
     }
 }
