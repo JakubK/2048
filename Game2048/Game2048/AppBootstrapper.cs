@@ -27,6 +27,9 @@ namespace Game2048
             Locator.CurrentMutable.Register(() => new SquareSpawner(), typeof(ISquareSpawner));
             Locator.CurrentMutable.Register(() => new SquareTranslator(), typeof(ISquareTranslator));
 
+            Locator.CurrentMutable.Register(() => new DragReader(), typeof(IDragReader));
+
+
             this
                 .Router
                 .NavigateAndReset

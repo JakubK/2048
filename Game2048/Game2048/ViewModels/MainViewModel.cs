@@ -1,4 +1,5 @@
 ﻿using DynamicData;
+using Game2048.Enums;
 using Game2048.Services;
 using Game2048.ViewModels.Base;
 using ReactiveUI;
@@ -21,6 +22,7 @@ namespace Game2048.ViewModels
         private ISquareSpawner squareSpawner;
         private IGameLostChecker gameLostChecker;
 
+        private IDragReader dragReader;
 
         private ObservableCollection<SquareViewModel> squares;
         public ObservableCollection<SquareViewModel> Squares
@@ -34,6 +36,8 @@ namespace Game2048.ViewModels
             squareTranslator = Locator.Current.GetService<ISquareTranslator>();
             squareSpawner = Locator.Current.GetService<ISquareSpawner>();
             gameLostChecker = Locator.Current.GetService<IGameLostChecker>();
+
+            dragReader = Locator.Current.GetService<IDragReader>();
 
             board = Locator.Current.GetService<IBoardContainer>();
             board.Width = 4;
@@ -84,54 +88,26 @@ namespace Game2048.ViewModels
 
             SwitchMove = ReactiveCommand.Create<PanUpdatedEventArgs>((args) =>
             {
-                if (args.StatusType == GestureStatus.Completed)
+                var direction = dragReader.GetDirection(args);
+                switch(direction)
                 {
-                    if (Math.Sqrt(PanX * PanX + PanY * PanY) > 100)
-                    {
-                        if (PanX > 0)
-                        {
-                            if (Math.Abs(PanX) > Math.Abs(PanY))
-                            {
-                                System.Diagnostics.Debug.WriteLine("Drag went right");
-                                MoveRight.Execute().Subscribe();
-                            }
-                        }
-                        else
-                        {
-                            if (Math.Abs(PanX) > Math.Abs(PanY))
-                            {
-                                System.Diagnostics.Debug.WriteLine("Drag went left");
-                                MoveLeft.Execute().Subscribe();
-                            }
-                        }
-                        if (PanY > 0)
-                        {
-                            if (Math.Abs(PanX) < Math.Abs(PanY))
-                            {
-                                System.Diagnostics.Debug.WriteLine("Drag went down");
-                                MoveDown.Execute().Subscribe();
-                            }
-                        }
-                        else
-                        {
-                            if (Math.Abs(PanX) < Math.Abs(PanY))
-                            {
-                                System.Diagnostics.Debug.WriteLine("Drag went up");
-                                MoveUp.Execute().Subscribe();
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    PanX = args.TotalX;
-                    PanY = args.TotalY;
+                    case MoveDirection.Left:
+                        MoveLeft.Execute().Subscribe();
+                        break;
+                    case MoveDirection.Right:
+                        MoveRight.Execute().Subscribe();
+                        break;
+                    case MoveDirection.Top:
+                        MoveUp.Execute().Subscribe();
+                        break;
+                    case MoveDirection.Bottom:
+                        MoveDown.Execute().Subscribe();
+                        break;
+                    case MoveDirection.None:
+                        break;
                 }
             });
         }
-
-        private double PanX;
-        private double PanY;
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
         public ReactiveCommand<Unit, Unit> MoveRight { get; }
