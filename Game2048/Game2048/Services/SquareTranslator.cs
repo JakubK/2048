@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Game2048.Enums;
 using Game2048.ViewModels;
 using Splat;
 
@@ -27,13 +28,28 @@ namespace Game2048.Services
             get { return boardContainer.Height; }
         }
 
+        public bool ChangeOccured { get; set; }
+        private MoveDirection lastMove;
+
         public SquareTranslator()
         {
             this.boardContainer = Locator.Current.GetService<IBoardContainer>();
+            lastMove = MoveDirection.None;
+            ChangeOccured = true;
         }
 
         public void TranslateHorizontally(int direction)
         {
+            if(!ChangeOccured)
+            {
+                if((direction > 0 && lastMove == MoveDirection.Right) || (direction < 0 && lastMove == MoveDirection.Left))
+                {
+                    System.Diagnostics.Debug.WriteLine("No change");
+                    return;
+                }
+            }
+
+            ChangeOccured = false;
             var rows = Squares.GroupBy(r => r.Y).ToList();
             foreach (var row in rows)
             {
@@ -47,8 +63,13 @@ namespace Game2048.Services
         private void PushRow(List<SquareViewModel> row, int direction)
         {
             int pos = 0;
-            row[0].X = direction > 0 ? (Width - 1) : 0;
-            pos = 0;
+            int desiredX = direction > 0 ? (Width - 1) : 0;
+            if(desiredX != row[0].X)
+            {
+                row[0].X = desiredX;
+                ChangeOccured = true;
+            }
+
             for (int i = 1; i < row.Count; i++)
             {
                 if (row[i].Value == row[pos].Value && !row[pos].CreatedInThisTurn)
@@ -60,23 +81,41 @@ namespace Game2048.Services
                     row.RemoveAt(i);
 
                     i--;
+
+                    ChangeOccured = true;
                 }
                 else
                 {
                     pos++;
-                    row[i].X = direction > 0 ? (Width - 1) - pos : pos;
+                    desiredX = direction > 0 ? (Width - 1) - pos : pos;
+                    if(desiredX != row[i].X)
+                    {
+                        row[i].X = desiredX;
+                        ChangeOccured = true;
+                    }
                 }
             }
-
 
             foreach (SquareViewModel item in row)
             {
                 item.CreatedInThisTurn = false;
             }
+
+            lastMove = direction > 0 ? MoveDirection.Right : MoveDirection.Left;
         }
 
         public void TranslateVertically(int direction)
         {
+            if (!ChangeOccured)
+            {
+                if ((direction > 0 && lastMove == MoveDirection.Bottom) || (direction < 0 && lastMove == MoveDirection.Top))
+                {
+                    System.Diagnostics.Debug.WriteLine("No change");
+                    return;
+                }
+            }
+
+            ChangeOccured = false;
             var cols = Squares.GroupBy(r => r.X).ToList();
             foreach (var col in cols)
             {
@@ -90,8 +129,12 @@ namespace Game2048.Services
         private void PushCol(List<SquareViewModel> col, int direction)
         {
             int pos = 0;
-            col[0].Y = direction > 0 ? (Height - 1) : 0;
-            pos = 0;
+            int desiredY = direction > 0 ? (Height - 1) : 0;
+            if(desiredY != col[0].Y)
+            {
+                col[0].Y = desiredY;
+                ChangeOccured = true;
+            }
 
             for (int i = 1; i < col.Count; i++)
             {
@@ -108,7 +151,12 @@ namespace Game2048.Services
                 else
                 {
                     pos++;
-                    col[i].Y = direction > 0 ? (Height - 1) - pos : pos;
+                    desiredY = direction > 0 ? (Height - 1) - pos : pos;
+                    if(desiredY != col[i].Y)
+                    {
+                        col[i].Y = desiredY;
+                        ChangeOccured = true;
+                    }
                 }
             }
 
@@ -116,6 +164,9 @@ namespace Game2048.Services
             {
                 item.CreatedInThisTurn = false;
             }
+
+            lastMove = direction > 0 ? MoveDirection.Bottom : MoveDirection.Top;
+
         }
     }
 }

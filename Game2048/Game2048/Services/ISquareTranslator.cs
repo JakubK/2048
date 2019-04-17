@@ -10,5 +10,6 @@ namespace Game2048.Services
     {
         void TranslateVertically(int direction);
         void TranslateHorizontally(int direction);
+        bool ChangeOccured { get; set; }
     }
 }
