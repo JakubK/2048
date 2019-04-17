@@ -150,6 +150,7 @@ namespace Game2048.Services
                     col.RemoveAt(i);
 
                     i--;
+                    ChangeOccured = true;
                 }
                 else
                 {
