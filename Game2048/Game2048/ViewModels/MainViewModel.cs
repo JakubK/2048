@@ -57,44 +57,21 @@ namespace Game2048.ViewModels
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 squareTranslator.TranslateHorizontally(-1);
-                if (squareTranslator.ChangeOccured)
-                    squareSpawner.SpawnSquares(1);
-                if (gameLostChecker.IsLost())
-                {
-                    System.Diagnostics.Debug.WriteLine("Game is lost");
-                }
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
                 squareTranslator.TranslateHorizontally(1);
-                if(squareTranslator.ChangeOccured)
-                    squareSpawner.SpawnSquares(1);
-                if (gameLostChecker.IsLost())
-                {
-                    System.Diagnostics.Debug.WriteLine("Game is lost");
-                }
             });
 
             MoveUp = ReactiveCommand.Create(() =>
             {
                 squareTranslator.TranslateVertically(-1);
-                if (squareTranslator.ChangeOccured)
-                    squareSpawner.SpawnSquares(1); if (gameLostChecker.IsLost())
-                {
-                    System.Diagnostics.Debug.WriteLine("Game is lost");
-                }
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
                 squareTranslator.TranslateVertically(1);
-                if (squareTranslator.ChangeOccured)
-                    squareSpawner.SpawnSquares(1);
-                if (gameLostChecker.IsLost())
-                {
-                    System.Diagnostics.Debug.WriteLine("Game is lost");
-                }
             });
 
             SwitchMove = ReactiveCommand.Create<PanUpdatedEventArgs>((args) =>
@@ -115,7 +92,14 @@ namespace Game2048.ViewModels
                         MoveDown.Execute().Subscribe();
                         break;
                     case MoveDirection.None:
-                        break;
+                        return;
+                }
+
+                if (squareTranslator.ChangeOccured)
+                    squareSpawner.SpawnSquares(1);
+                if (gameLostChecker.IsLost())
+                {
+                    System.Diagnostics.Debug.WriteLine("Game is lost");
                 }
             });
         }
