@@ -26,6 +26,7 @@ namespace Game2048.Views
             this.WhenAny(x => x.ViewModel.Squares, x => x.Value)
                 .Subscribe(x => BindableLayout.SetItemsSource(Board, x));
 
+            this.OneWayBind(ViewModel, vm => vm.LastMove, v => v.lastMoveLabel.Text);
             PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
         }
 

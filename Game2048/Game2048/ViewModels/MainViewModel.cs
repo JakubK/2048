@@ -31,6 +31,13 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref squares, value);
         }
 
+        private MoveDirection lastMove;
+        public MoveDirection LastMove
+        {
+            get => lastMove;
+            set => this.RaiseAndSetIfChanged(ref lastMove, value);
+        }
+
         public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
         {
             squareTranslator = Locator.Current.GetService<ISquareTranslator>();
@@ -45,6 +52,7 @@ namespace Game2048.ViewModels
             board.Squares = new ObservableCollection<SquareViewModel>();
 
             squareSpawner.SpawnSquares(2);
+            LastMove = MoveDirection.None;
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 squareTranslator.TranslateHorizontally(-1);
@@ -90,8 +98,8 @@ namespace Game2048.ViewModels
 
             SwitchMove = ReactiveCommand.Create<PanUpdatedEventArgs>((args) =>
             {
-                var direction = dragReader.GetDirection(args);
-                switch(direction)
+                LastMove = dragReader.GetDirection(args);
+                switch(LastMove)
                 {
                     case MoveDirection.Left:
                         MoveLeft.Execute().Subscribe();

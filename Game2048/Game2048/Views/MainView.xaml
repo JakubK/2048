@@ -31,5 +31,6 @@
         </DataTemplate>
       </BindableLayout.ItemTemplate>
     </Grid>
+    <Label x:Name="lastMoveLabel" HorizontalOptions="Center">Last Move</Label>
   </StackLayout>
 </ui:ContentPageBase>
