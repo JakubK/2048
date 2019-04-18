@@ -1,15 +1,13 @@
-﻿using DynamicData;
-using Game2048.Enums;
+﻿using Game2048.Enums;
 using Game2048.Services;
 using Game2048.ViewModels.Base;
 using ReactiveUI;
-using ReactiveUI.Legacy;
 using Splat;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Game2048.ViewModels
@@ -74,6 +72,8 @@ namespace Game2048.ViewModels
                 squareTranslator.TranslateVertically(1);
             });
 
+            SpawnSquare = ReactiveCommand.CreateFromTask(SpawnSquareTask);
+
             SwitchMove = ReactiveCommand.Create<PanUpdatedEventArgs>((args) =>
             {
                 LastMove = dragReader.GetDirection(args);
@@ -95,20 +95,31 @@ namespace Game2048.ViewModels
                         return;
                 }
 
-                if (squareTranslator.ChangeOccured)
-                    squareSpawner.SpawnSquares(1);
-                if (gameLostChecker.IsLost())
-                {
-                    System.Diagnostics.Debug.WriteLine("Game is lost");
-                }
+                SpawnSquare.Execute().Subscribe();
             });
         }
+
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
         public ReactiveCommand<Unit, Unit> MoveRight { get; }
         public ReactiveCommand<Unit, Unit> MoveUp { get; }
         public ReactiveCommand<Unit, Unit> MoveDown { get; }
+
     
         public ReactiveCommand<PanUpdatedEventArgs, Unit> SwitchMove { get; }
+
+        private ReactiveCommand<Unit, Unit> SpawnSquare { get; }
+
+        private async Task SpawnSquareTask()
+        {
+            await Task.Delay(500);
+            if (squareTranslator.ChangeOccured)
+                squareSpawner.SpawnSquares(1);
+            if (gameLostChecker.IsLost())
+            {
+                System.Diagnostics.Debug.WriteLine("Game is lost");
+            }
+        }
+
     }
 }
