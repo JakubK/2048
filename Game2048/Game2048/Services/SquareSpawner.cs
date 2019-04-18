@@ -29,7 +29,7 @@ namespace Game2048.Services
                     return;
                 }
 
-                if (!boardContainer.Squares.Any(x => x.X == squareViewModel.X && x.Y == squareViewModel.Y))
+                if (!boardContainer.Squares.Any(x => x.XRequest == squareViewModel.XRequest && x.YRequest == squareViewModel.YRequest))
                 {
                     boardContainer.Squares.Add(squareViewModel);
                     i++;

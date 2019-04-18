@@ -64,9 +64,9 @@ namespace Game2048.Services
         {
             int pos = 0;
             int desiredX = direction > 0 ? (Width - 1) : 0;
-            if(desiredX != row[0].X)
+            if(desiredX != row[0].XRequest)
             {
-                row[0].X = desiredX;
+                row[0].XRequest = desiredX;
                 ChangeOccured = true;
             }
 
@@ -79,7 +79,8 @@ namespace Game2048.Services
 
                     row[pos].CreatedInThisTurn = true;
 
-                    Squares.Remove(row[i]);
+                    Squares.ElementAt(Squares.IndexOf(row[i])).ToBeRemoved = true;
+                    row[i].XRequest = direction > 0 ? (Width - 1) - pos : pos;
                     row.RemoveAt(i);
 
                     i--;
@@ -90,9 +91,9 @@ namespace Game2048.Services
                 {
                     pos++;
                     desiredX = direction > 0 ? (Width - 1) - pos : pos;
-                    if(desiredX != row[i].X)
+                    if(desiredX != row[i].XRequest)
                     {
-                        row[i].X = desiredX;
+                        row[i].XRequest = desiredX;
                         ChangeOccured = true;
                     }
                 }
@@ -134,7 +135,7 @@ namespace Game2048.Services
             int desiredY = direction > 0 ? (Height - 1) : 0;
             if(desiredY != col[0].Y)
             {
-                col[0].Y = desiredY;
+                col[0].YRequest = desiredY;
                 ChangeOccured = true;
             }
 
@@ -146,7 +147,8 @@ namespace Game2048.Services
                     boardContainer.Score += col[pos].Value;
                     col[pos].CreatedInThisTurn = true;
 
-                    Squares.Remove(col[i]);
+                    Squares.ElementAt(Squares.IndexOf(col[i])).ToBeRemoved = true;
+                    col[i].YRequest = direction > 0 ? (Height - 1) - pos : pos;
                     col.RemoveAt(i);
 
                     i--;
@@ -156,9 +158,9 @@ namespace Game2048.Services
                 {
                     pos++;
                     desiredY = direction > 0 ? (Height - 1) - pos : pos;
-                    if(desiredY != col[i].Y)
+                    if(desiredY != col[i].YRequest)
                     {
-                        col[i].Y = desiredY;
+                        col[i].YRequest = desiredY;
                         ChangeOccured = true;
                     }
                 }
