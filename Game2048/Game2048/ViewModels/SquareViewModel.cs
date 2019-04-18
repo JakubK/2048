@@ -43,6 +43,27 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref val, value);
         }
 
+        private bool toBeRemoved;
+        public bool ToBeRemoved
+        {
+            get => toBeRemoved;
+            set => this.RaiseAndSetIfChanged(ref toBeRemoved, value);
+        }
+
+        private int xRequest = -1;
+        public int XRequest
+        {
+            get => xRequest;
+            set => this.RaiseAndSetIfChanged(ref xRequest, value);
+        }
+
+        private int yRequest = -1;
+        public int YRequest
+        {
+            get => yRequest;
+            set => this.RaiseAndSetIfChanged(ref yRequest, value);
+        }
+
         public SquareViewModel()
         {
             this.Appeared = true;
@@ -54,6 +75,9 @@ namespace Game2048.ViewModels
             this.Y = y;
             this.Value = value;
             this.Appeared = true;
+
+            this.XRequest = x;
+            this.yRequest = y;
         }
     }
 }
