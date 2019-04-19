@@ -35,11 +35,11 @@ namespace Game2048.Views
 
             this.OneWayBind(ViewModel, vm => vm.Value, v => v.SquareButton.Text);
 
-            appearAnimation = new Animation(v => SquareButton.Scale = v, 0, 1);
-            leftAnimation = new Animation(v => SquareButton.Margin = new Thickness(-v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * 75  * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            rightAnimation = new Animation(v => SquareButton.Margin = new Thickness(v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            topAnimation = new Animation(v => SquareButton.Margin = new Thickness(0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
-            bottomAnimation = new Animation(v => SquareButton.Margin = new Thickness(0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
+            appearAnimation = new Animation(v => this.Scale = v, 0, 1);
+            leftAnimation = new Animation(v => this.Margin = new Thickness(-v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * 75  * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
+            rightAnimation = new Animation(v => this.Margin = new Thickness(v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
+            topAnimation = new Animation(v => this.Margin = new Thickness(0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
+            bottomAnimation = new Animation(v => this.Margin = new Thickness(0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
 
         }
 
@@ -47,14 +47,13 @@ namespace Game2048.Views
         {
             base.OnParentSet();
 
-
             ViewModel.WhenAnyValue(x => x.Appeared).Subscribe(a =>
             {
                 if(a == true)
                 {
-                    appearAnimation.Commit(SquareButton, "Appear", 16, 500, Easing.Linear, (v, c) =>
+                    appearAnimation.Commit(this, "Appear", 16, 500, Easing.Linear, (v, c) =>
                     {
-                        SquareButton.Scale = 1;
+                        this.Scale = 1;
                         ViewModel.Appeared = false;
                     }, () => false);
                 }
@@ -66,27 +65,27 @@ namespace Game2048.Views
                 {
                     if (a < ViewModel.X)
                     {
-                        leftAnimation.Commit(SquareButton, "LeftAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        leftAnimation.Commit(this, "LeftAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.X = a;
-                            SquareButton.Margin = new Thickness(0, 0, 0, 0);
+                            this.Margin = new Thickness(0, 0, 0, 0);
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
                             }
-                        });
+                        }, () => false);
                     }
                     else if(a > ViewModel.X)
                     {
-                        rightAnimation.Commit(SquareButton, "RightAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        rightAnimation.Commit(this, "RightAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.X = a;
-                            SquareButton.Margin = new Thickness(0, 0, 0, 0);
+                            this.Margin = new Thickness(0, 0, 0, 0);
                             if(ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
                             }
-                        });
+                        }, () => false);
                     }
                 }
             });
@@ -97,27 +96,27 @@ namespace Game2048.Views
                 {
                     if (a < ViewModel.Y)
                     {
-                        topAnimation.Commit(SquareButton, "TopAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        topAnimation.Commit(this, "TopAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.Y = a;
-                            SquareButton.Margin = new Thickness(0, 0, 0, 0);
+                            this.Margin = new Thickness(0, 0, 0, 0);
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
                             }
-                        });
+                        }, () => false);
                     }
                     else if (a > ViewModel.Y)
                     {
-                        bottomAnimation.Commit(SquareButton, "BottomAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        bottomAnimation.Commit(this, "BottomAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.Y = a;
-                            SquareButton.Margin = new Thickness(0, 0, 0, 0);
+                            this.Margin = new Thickness(0, 0, 0, 0);
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
                             }
-                        });
+                        }, () => false);
                     }
                 }
             });

@@ -28,7 +28,7 @@
           BackgroundColor="Red">
       <BindableLayout.ItemTemplate>
         <DataTemplate>
-          <ui:SquareView Grid.Row="{Binding Y}"  Grid.Column="{Binding X}"/>
+          <ui:SquareView/>
         </DataTemplate>
       </BindableLayout.ItemTemplate>
     </Grid>
