@@ -29,7 +29,7 @@ namespace Game2048.Views
             this.WhenAny(x => x.Board.Width, x => x.Value)
                 .Subscribe(x =>
                 {
-                    if (!init && x != -1)
+                    if (!init && x > 0)
                     {
                         Board.HeightRequest = x;
                         Board.WidthRequest = x;

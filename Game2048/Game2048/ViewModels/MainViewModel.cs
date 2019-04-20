@@ -124,7 +124,7 @@ namespace Game2048.ViewModels
 
         private async Task SpawnSquareTask()
         {
-            await Task.Delay(500);
+            await Task.Delay(300);
             if (squareTranslator.ChangeOccured)
                 squareSpawner.SpawnSquares(1);
             if (gameLostChecker.IsLost())

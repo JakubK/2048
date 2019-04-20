@@ -23,9 +23,18 @@ namespace Game2048.Views
         {
             base.OnAppearing();
 
+            this.BindCommand(ViewModel, vm => vm.DecrementDimension, v => v.leftListBtn);
+            this.BindCommand(ViewModel, vm => vm.IncrementDimension, v => v.rightListBtn);
+
+            this.BindCommand(ViewModel, vm => vm.OpenLevel, v => v.openLevelBtn);
+
             this.BindCommand(ViewModel, vm => vm.OpenGithub, v => v.githubBtn);
             this.BindCommand(ViewModel, vm => vm.CloseApp, v => v.closeBtn);
 
+            this.WhenAnyValue(x => x.ViewModel.SelectedDimension).Subscribe(x =>
+            {
+                dimensionLabel.Text = x + " X " + x;
+            });
         }
     }
 }
