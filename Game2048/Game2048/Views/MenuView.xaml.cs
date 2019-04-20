@@ -1,4 +1,5 @@
 ﻿using Game2048.ViewModels;
+using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,14 @@ namespace Game2048.Views
 		{
 			InitializeComponent ();
 		}
-	}
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            this.BindCommand(ViewModel, vm => vm.OpenGithub, v => v.githubBtn);
+            this.BindCommand(ViewModel, vm => vm.CloseApp, v => v.closeBtn);
+
+        }
+    }
 }

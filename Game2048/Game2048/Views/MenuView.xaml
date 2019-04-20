@@ -17,8 +17,8 @@
     </FlexLayout>
     <Button CornerRadius="5" BackgroundColor="#00C853" HorizontalOptions="Center" WidthRequest="200" HeightRequest="60" Padding="10" FontSize="Large" TextColor="White" Text="START A GAME"/>
     <StackLayout Margin="10,0,10,0" Spacing="20">
-      <Button CornerRadius="5" BackgroundColor="#333333" Padding="10" FontSize="Large" TextColor="White" Text="GITHUB"/>
-      <Button CornerRadius="5" BackgroundColor="#D50000" Padding="10" FontSize="Large" TextColor="White" Text="EXIT"/>
+      <Button x:Name="githubBtn" CornerRadius="5" BackgroundColor="#333333" Padding="10" FontSize="Large" TextColor="White" Text="GITHUB"/>
+      <Button x:Name="closeBtn" CornerRadius="5" BackgroundColor="#D50000" Padding="10" FontSize="Large" TextColor="White" Text="EXIT"/>
     </StackLayout>
   </StackLayout>
 </ui:ContentPageBase>
