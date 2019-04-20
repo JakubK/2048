@@ -7,7 +7,7 @@
              Grid.Row="{Binding Y}"
              Grid.Column="{Binding X}"
              x:Class="Game2048.Views.SquareView">
-  <Button CornerRadius="5" FontSize="Large"  BackgroundColor="#B71C1C" TextColor="White" x:Name="SquareButton" BorderWidth="0">
+  <Button CornerRadius="5" TextColor="White" x:Name="SquareButton" BorderWidth="0">
     <Button.Triggers>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="2">
         <Setter Property="BackgroundColor" Value="#90A4AE"/>
@@ -31,6 +31,12 @@
         <Setter Property="BackgroundColor" Value="#E57373"/>
       </DataTrigger>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="256">
+        <Setter Property="BackgroundColor" Value="#E53935"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="1024">
+        <Setter Property="BackgroundColor" Value="#E53935"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="2048">
         <Setter Property="BackgroundColor" Value="#E53935"/>
       </DataTrigger>
     </Button.Triggers>

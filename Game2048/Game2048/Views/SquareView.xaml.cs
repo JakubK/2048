@@ -22,22 +22,19 @@ namespace Game2048.Views
         Animation topAnimation;
         Animation bottomAnimation;
 
-
         public SquareView ()
 		{
 			InitializeComponent ();
-
             boardContainer = Locator.Current.GetService<IBoardContainer>();
 
             this.OneWayBind(ViewModel, vm => vm.Value, v => v.SquareButton.Text);
 
             appearAnimation = new Animation(v => this.Scale = v, 0, 1);
 
-            leftAnimation = new Animation(v => this.Margin = new Thickness(-v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * 75  * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            rightAnimation = new Animation(v => this.Margin = new Thickness(v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            topAnimation = new Animation(v => this.Margin = new Thickness(0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
-            bottomAnimation = new Animation(v => this.Margin = new Thickness(0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
-
+            leftAnimation = new Animation(v => this.Margin = new Thickness(-v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
+            rightAnimation = new Animation(v => this.Margin = new Thickness(v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
+            topAnimation = new Animation(v => this.Margin = new Thickness(0, -v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
+            bottomAnimation = new Animation(v => this.Margin = new Thickness(0, v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, -v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
         }
 
         protected override void OnParentSet()
@@ -48,7 +45,7 @@ namespace Game2048.Views
             {
                 if(a == true)
                 {
-                    appearAnimation.Commit(this, "Appear", 16, 500, Easing.Linear, (v, c) =>
+                    appearAnimation.Commit(this, "Appear", 16, 250, Easing.Linear, (v, c) =>
                     {
                         this.Scale = 1;
                         ViewModel.Appeared = false;
@@ -66,7 +63,7 @@ namespace Game2048.Views
                     }
                     if (a < ViewModel.X)
                     {
-                        leftAnimation.Commit(this, "LeftAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        leftAnimation.Commit(this, "LeftAnimation", 16, 250, Easing.Linear, (v, c) =>
                         {
                             ViewModel.X = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
@@ -79,7 +76,7 @@ namespace Game2048.Views
                     }
                     else if(a > ViewModel.X)
                     {
-                        rightAnimation.Commit(this, "RightAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        rightAnimation.Commit(this, "RightAnimation", 16, 250, Easing.Linear, (v, c) =>
                         {
                             ViewModel.X = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
@@ -104,7 +101,7 @@ namespace Game2048.Views
 
                     if (a < ViewModel.Y)
                     {                   
-                        topAnimation.Commit(this, "TopAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        topAnimation.Commit(this, "TopAnimation", 16, 250, Easing.Linear, (v, c) =>
                         {
                             ViewModel.Y = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
@@ -117,7 +114,7 @@ namespace Game2048.Views
                     }
                     else if (a > ViewModel.Y)
                     {
-                        bottomAnimation.Commit(this, "BottomAnimation", 16, 500, Easing.Linear, (v, c) =>
+                        bottomAnimation.Commit(this, "BottomAnimation", 16, 250, Easing.Linear, (v, c) =>
                         {
                             ViewModel.Y = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
