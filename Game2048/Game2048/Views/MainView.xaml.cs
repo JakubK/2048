@@ -26,6 +26,13 @@ namespace Game2048.Views
         {
             base.OnAppearing();
 
+            this.OneWayBind(ViewModel, vm => vm.EndGame, v => v.EndScreen.IsVisible);
+            this.WhenAnyValue(x => x.ViewModel.EndGame).Subscribe(x =>
+            {
+                Board.IsVisible = !x;
+            });
+
+
             this.WhenAny(x => x.Board.Width, x => x.Value)
                 .Subscribe(x =>
                 {
@@ -33,6 +40,10 @@ namespace Game2048.Views
                     {
                         Board.HeightRequest = x;
                         Board.WidthRequest = x;
+
+                        EndScreen.WidthRequest = x;
+                        EndScreen.HeightRequest = x;
+
                         init = true;
                     }
                 });

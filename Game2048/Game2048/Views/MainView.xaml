@@ -24,18 +24,28 @@
            HorizontalOptions="Center"
            VerticalOptions="CenterAndExpand"
            InputTransparent="True">
-      <Grid x:Name="Board"        
+      <StackLayout>
+        <Grid x:Name="Board"        
           ColumnSpacing="5"
           RowSpacing="5"
           InputTransparent="True"
           helpers:GridHelpers.ColumnCount="{Binding board.Width}"
           helpers:GridHelpers.RowCount="{Binding board.Height}">
-        <BindableLayout.ItemTemplate>
-          <DataTemplate>
-            <ui:SquareView/>
-          </DataTemplate>
-        </BindableLayout.ItemTemplate>
-      </Grid>
+          <BindableLayout.ItemTemplate>
+            <DataTemplate>
+              <ui:SquareView/>
+            </DataTemplate>
+          </BindableLayout.ItemTemplate>
+        </Grid>
+        <Grid x:Name="EndScreen"
+          InputTransparent="True">
+          <FlexLayout Direction="Column" JustifyContent="Center" AlignItems="Center">
+            <Label FontSize="Large" TextColor="#D50000">YOU LOST!</Label>
+            <Label FontSize="Medium" TextColor="#212121">Not this time.</Label>
+            <Label FontSize="Medium" TextColor="#212121">Try Again!</Label>
+          </FlexLayout>
+        </Grid>
+      </StackLayout>
     </Frame>
     <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
       <Button x:Name="backMenuBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>

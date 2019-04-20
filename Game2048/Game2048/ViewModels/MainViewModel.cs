@@ -22,6 +22,13 @@ namespace Game2048.ViewModels
 
         private IDragReader dragReader;
 
+        private bool endGame;
+        public bool EndGame
+        {
+            get => endGame;
+            set => this.RaiseAndSetIfChanged(ref endGame, value);
+        }
+
         private int bestScore;
         public int BestScore
         {
@@ -139,7 +146,7 @@ namespace Game2048.ViewModels
                 squareSpawner.SpawnSquares(1);
             if (gameLostChecker.IsLost())
             {
-                System.Diagnostics.Debug.WriteLine("Game is lost");
+                EndGame = true;
             }
         }
 
