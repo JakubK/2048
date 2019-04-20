@@ -51,7 +51,8 @@ namespace Game2048.Views
                     pointsLabel.Text = "CURRENT SCORE: " + x;
                 });
 
-            this.BindCommand(ViewModel, x => x.GoToMenu, v => v.backMenuBtn);          
+            this.BindCommand(ViewModel, x => x.GoToMenu, v => v.backMenuBtn);
+            this.BindCommand(ViewModel, x => x.ReplayLevel, v => v.replayBtn);
 
             PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
         }

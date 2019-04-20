@@ -63,6 +63,11 @@ namespace Game2048.ViewModels
                 HostScreen.Router.Navigate.Execute(new MenuViewModel()).Subscribe();
             });
 
+            ReplayLevel = ReactiveCommand.Create(() =>
+            {
+                HostScreen.Router.NavigateAndReset.Execute(new MainViewModel(dimension)).Subscribe();
+            });
+
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 squareTranslator.TranslateHorizontally(-1);
@@ -111,6 +116,7 @@ namespace Game2048.ViewModels
         }
 
         public ReactiveCommand<Unit,Unit> GoToMenu { get; }
+        public ReactiveCommand<Unit,Unit> ReplayLevel { get; }
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
         public ReactiveCommand<Unit, Unit> MoveRight { get; }
