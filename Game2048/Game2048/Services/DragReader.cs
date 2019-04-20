@@ -26,34 +26,22 @@ namespace Game2048.Services
                     if (PanX > 0)
                     {
                         if (Math.Abs(PanX) > Math.Abs(PanY))
-                        {
-                            System.Diagnostics.Debug.WriteLine("Drag went right");
                             return MoveDirection.Right;
-                        }
                     }
                     else
                     {
                         if (Math.Abs(PanX) > Math.Abs(PanY))
-                        {
-                            System.Diagnostics.Debug.WriteLine("Drag went left");
                             return MoveDirection.Left;
-                        }
                     }
                     if (PanY > 0)
                     {
                         if (Math.Abs(PanX) < Math.Abs(PanY))
-                        {
-                            System.Diagnostics.Debug.WriteLine("Drag went down");
                             return MoveDirection.Bottom;
-                        }
                     }
                     else
                     {
                         if (Math.Abs(PanX) < Math.Abs(PanY))
-                        {
-                            System.Diagnostics.Debug.WriteLine("Drag went up");
                             return MoveDirection.Top;
-                        }
                     }
                 }
             }

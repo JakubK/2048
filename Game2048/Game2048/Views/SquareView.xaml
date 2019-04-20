@@ -7,5 +7,32 @@
              Grid.Row="{Binding Y}"
              Grid.Column="{Binding X}"
              x:Class="Game2048.Views.SquareView">
-  <Button x:Name="SquareButton" BorderWidth="0"></Button>
+  <Button CornerRadius="5" FontSize="Large"  BackgroundColor="#B71C1C" TextColor="White" x:Name="SquareButton" BorderWidth="0">
+    <Button.Triggers>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="2">
+        <Setter Property="BackgroundColor" Value="#90A4AE"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="4">
+        <Setter Property="BackgroundColor" Value="#546E7A"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="8">
+        <Setter Property="BackgroundColor" Value="#263238"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="16">
+        <Setter Property="BackgroundColor" Value="#A1887F"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="32">
+        <Setter Property="BackgroundColor" Value="#6D4C41"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="64">
+        <Setter Property="BackgroundColor" Value="#6D4C41"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="128">
+        <Setter Property="BackgroundColor" Value="#E57373"/>
+      </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="256">
+        <Setter Property="BackgroundColor" Value="#E53935"/>
+      </DataTrigger>
+    </Button.Triggers>
+  </Button>
 </ui:ContentViewBase>

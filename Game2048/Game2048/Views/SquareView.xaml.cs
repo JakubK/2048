@@ -3,13 +3,8 @@ using Game2048.ViewModels;
 using ReactiveUI;
 using Splat;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -27,6 +22,7 @@ namespace Game2048.Views
         Animation topAnimation;
         Animation bottomAnimation;
 
+
         public SquareView ()
 		{
 			InitializeComponent ();
@@ -36,6 +32,7 @@ namespace Game2048.Views
             this.OneWayBind(ViewModel, vm => vm.Value, v => v.SquareButton.Text);
 
             appearAnimation = new Animation(v => this.Scale = v, 0, 1);
+
             leftAnimation = new Animation(v => this.Margin = new Thickness(-v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * 75  * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
             rightAnimation = new Animation(v => this.Margin = new Thickness(v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * 75 * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
             topAnimation = new Animation(v => this.Margin = new Thickness(0, -v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * 75 * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
@@ -43,7 +40,7 @@ namespace Game2048.Views
 
         }
 
-        protected async override void OnParentSet()
+        protected override void OnParentSet()
         {
             base.OnParentSet();
 
@@ -63,12 +60,17 @@ namespace Game2048.Views
             {
                 if (a >= 0 && ViewModel.X != a)
                 {
+                    if (ViewModel.ToBeRemoved)
+                    {
+                        this.FadeTo(0, 250, Easing.Linear);
+                    }
                     if (a < ViewModel.X)
                     {
                         leftAnimation.Commit(this, "LeftAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.X = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
+
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
@@ -81,7 +83,8 @@ namespace Game2048.Views
                         {
                             ViewModel.X = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
-                            if(ViewModel.ToBeRemoved)
+
+                            if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
                             }
@@ -94,12 +97,18 @@ namespace Game2048.Views
             {
                 if (a >= 0 && ViewModel.Y != a)
                 {
-                    if (a < ViewModel.Y)
+                    if (ViewModel.ToBeRemoved)
                     {
+                        this.FadeTo(0, 250, Easing.Linear);
+                    }
+
+                    if (a < ViewModel.Y)
+                    {                   
                         topAnimation.Commit(this, "TopAnimation", 16, 500, Easing.Linear, (v, c) =>
                         {
                             ViewModel.Y = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
+
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);
@@ -112,6 +121,7 @@ namespace Game2048.Views
                         {
                             ViewModel.Y = a;
                             this.Margin = new Thickness(0, 0, 0, 0);
+
                             if (ViewModel.ToBeRemoved)
                             {
                                 boardContainer.Squares.Remove(ViewModel);

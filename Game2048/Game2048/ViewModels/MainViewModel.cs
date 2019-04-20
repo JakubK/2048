@@ -22,6 +22,13 @@ namespace Game2048.ViewModels
 
         private IDragReader dragReader;
 
+        private int bestScore;
+        public int BestScore
+        {
+            get => bestScore;
+            set => this.RaiseAndSetIfChanged(ref bestScore, value);
+        }
+
         public ObservableCollection<SquareViewModel> Squares
         {
             get => board.Squares;

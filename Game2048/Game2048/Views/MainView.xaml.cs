@@ -26,11 +26,16 @@ namespace Game2048.Views
             this.WhenAny(x => x.ViewModel.Squares, x => x.Value)
                 .Subscribe(x => BindableLayout.SetItemsSource(Board, x));
 
+            this.WhenAny(x => x.ViewModel.BestScore, x => x.Value)
+                .Subscribe(x => bestScoreLabel.Text = "BEST SCORE: " + x);
 
-            this.OneWayBind(ViewModel, vm => vm.board.Score, v => v.pointsLabel.Text);
-
-
-            this.OneWayBind(ViewModel, vm => vm.LastMove, v => v.lastMoveLabel.Text);
+            this.WhenAny(x => x.ViewModel.board.Score, x => x.Value)
+                .Subscribe(x =>
+                {
+                    if (x > ViewModel.BestScore)
+                        ViewModel.BestScore = x;
+                    pointsLabel.Text = "CURRENT SCORE: " + x;
+                });
 
             PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
         }
