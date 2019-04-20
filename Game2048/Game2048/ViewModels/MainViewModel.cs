@@ -59,6 +59,11 @@ namespace Game2048.ViewModels
 
             LastMove = MoveDirection.None;
 
+            GoToMenu = ReactiveCommand.Create(() =>
+            {
+                HostScreen.Router.Navigate.Execute(new MenuViewModel()).Subscribe();
+            });
+
             MoveLeft = ReactiveCommand.Create(() => 
             {
                 squareTranslator.TranslateHorizontally(-1);
@@ -106,6 +111,7 @@ namespace Game2048.ViewModels
             });
         }
 
+        public ReactiveCommand<Unit,Unit> GoToMenu { get; }
 
         public ReactiveCommand<Unit, Unit> MoveLeft { get; }
         public ReactiveCommand<Unit, Unit> MoveRight { get; }
