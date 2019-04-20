@@ -57,6 +57,10 @@ namespace Game2048.ViewModels
             squareSpawner.SpawnSquares(2);
 
             LastMove = MoveDirection.None;
+            if(Application.Current.Properties.ContainsKey(dimension.ToString()))
+            {
+                BestScore = (int)(Application.Current.Properties[dimension.ToString()]);
+            }
 
             GoToMenu = ReactiveCommand.Create(() =>
             {
