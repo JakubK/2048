@@ -28,8 +28,8 @@
           ColumnSpacing="5"
           RowSpacing="5"
           InputTransparent="True"
-          helpers:GridHelpers.ColumnCount="4"
-          helpers:GridHelpers.RowCount="4">
+          helpers:GridHelpers.ColumnCount="{Binding board.Width}"
+          helpers:GridHelpers.RowCount="{Binding board.Height}">
         <BindableLayout.ItemTemplate>
           <DataTemplate>
             <ui:SquareView/>

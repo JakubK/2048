@@ -21,8 +21,7 @@ namespace Game2048.ViewModels
             CloseApp = ReactiveCommand.Create(() =>
             {
                 DependencyService.Get<ICloseApplication>()?.Close();
-            });
-            
+            });           
         }
 
         public ReactiveCommand<Unit,Unit> OpenGithub { get; }

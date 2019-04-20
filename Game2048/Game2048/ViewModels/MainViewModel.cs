@@ -41,7 +41,7 @@ namespace Game2048.ViewModels
             set => this.RaiseAndSetIfChanged(ref lastMove, value);
         }
 
-        public MainViewModel(IScreen hostScreen = null) : base(hostScreen)
+        public MainViewModel(int dimension,IScreen hostScreen = null) : base(hostScreen)
         {
             squareTranslator = Locator.Current.GetService<ISquareTranslator>();
             squareSpawner = Locator.Current.GetService<ISquareSpawner>();
@@ -50,8 +50,7 @@ namespace Game2048.ViewModels
             dragReader = Locator.Current.GetService<IDragReader>();
 
             board = Locator.Current.GetService<IBoardContainer>();
-            board.Width = 4;
-            board.Height = 4;
+            board.Width = board.Height = dimension;
             board.Score = 0;
             board.Squares = new ObservableCollection<SquareViewModel>();
 

@@ -11,6 +11,7 @@ namespace Game2048
         {
             InitializeComponent();
 
+
             var bootstrapper = new AppBootstrapper();
             MainPage = bootstrapper.CreateMainPage();
         }

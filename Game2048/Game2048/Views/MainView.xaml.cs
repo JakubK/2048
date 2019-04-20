@@ -1,4 +1,5 @@
-﻿using Game2048.ViewModels;
+﻿using Game2048.Helpers;
+using Game2048.ViewModels;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -19,9 +20,22 @@ namespace Game2048.Views
 			InitializeComponent ();
         }
 
+        bool init = false;
+
         protected override void OnAppearing()
         {
             base.OnAppearing();
+
+            this.WhenAny(x => x.Board.Width, x => x.Value)
+                .Subscribe(x =>
+                {
+                    if (!init && x != -1)
+                    {
+                        Board.HeightRequest = x;
+                        Board.WidthRequest = x;
+                        init = true;
+                    }
+                });
 
             this.WhenAny(x => x.ViewModel.Squares, x => x.Value)
                 .Subscribe(x => BindableLayout.SetItemsSource(Board, x));
