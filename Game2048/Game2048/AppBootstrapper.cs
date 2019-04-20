@@ -20,7 +20,9 @@ namespace Game2048
             Router = new RoutingState();
 
             Locator.CurrentMutable.RegisterConstant(this, typeof(IScreen));
+
             Locator.CurrentMutable.Register(() => new MainView(), typeof(IViewFor<MainViewModel>));
+            Locator.CurrentMutable.Register(() => new MenuView(), typeof(IViewFor<MenuViewModel>));
             Locator.CurrentMutable.RegisterConstant(new BoardContainer(), typeof(IBoardContainer));
 
             Locator.CurrentMutable.Register(() => new GameLostChecker(), typeof(IGameLostChecker));
@@ -29,11 +31,10 @@ namespace Game2048
 
             Locator.CurrentMutable.Register(() => new DragReader(), typeof(IDragReader));
 
-
             this
                 .Router
                 .NavigateAndReset
-                .Execute(new MainViewModel())
+                .Execute(new MenuViewModel())
                 .Subscribe();
         }
 
