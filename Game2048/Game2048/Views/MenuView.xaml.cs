@@ -34,6 +34,7 @@ namespace Game2048.Views
             this.WhenAnyValue(x => x.ViewModel.SelectedDimension).Subscribe(x =>
             {
                 dimensionLabel.Text = x + " X " + x;
+                mapImg.Source = ImageSource.FromFile("P" + x + ".png");
             });
         }
     }

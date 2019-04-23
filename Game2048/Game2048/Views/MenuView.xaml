@@ -9,7 +9,7 @@
              BackgroundColor="#212121"
              NavigationPage.HasNavigationBar="False">
   <StackLayout Padding="10,100,10,30" Spacing="30">
-    <BoxView HorizontalOptions="Center" BackgroundColor="White" CornerRadius="5" WidthRequest="200" HeightRequest="200"/>
+    <Image x:Name="mapImg" HorizontalOptions="Center" BackgroundColor="White" WidthRequest="200" HeightRequest="200"/>
     <FlexLayout JustifyContent="SpaceAround" AlignItems="Center" Direction="Row">
       <ImageButton Padding="10" Source="left_icon.png" x:Name="leftListBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
       <Label FontSize="Large" TextColor="White" x:Name="dimensionLabel"></Label>
