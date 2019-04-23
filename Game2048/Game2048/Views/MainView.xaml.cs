@@ -44,7 +44,6 @@ namespace Game2048.Views
                         EndScreen.WidthRequest = x;
                         EndScreen.HeightRequest = x;
 
-                        init = true;
                     }
                 });
 
@@ -67,8 +66,12 @@ namespace Game2048.Views
 
             this.BindCommand(ViewModel, x => x.GoToMenu, v => v.backMenuBtn);
             this.BindCommand(ViewModel, x => x.ReplayLevel, v => v.replayBtn);
+            
+            if(!init)
+                PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
 
-            PanGesture.Events().PanUpdated.InvokeCommand(ViewModel.SwitchMove);
+            init = true;
+
         }
 
     }

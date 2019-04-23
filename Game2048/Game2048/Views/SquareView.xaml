@@ -25,7 +25,7 @@
         <Setter Property="BackgroundColor" Value="#6D4C41"/>
       </DataTrigger>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="64">
-        <Setter Property="BackgroundColor" Value="#6D4C41"/>
+        <Setter Property="BackgroundColor" Value="#4E342E"/>
       </DataTrigger>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="128">
         <Setter Property="BackgroundColor" Value="#E57373"/>

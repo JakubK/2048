@@ -121,7 +121,6 @@ namespace Game2048.ViewModels
                     case MoveDirection.None:
                         return;
                 }
-
                 SpawnSquare.Execute().Subscribe();
             });
         }
