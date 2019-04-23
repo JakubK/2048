@@ -53,13 +53,9 @@ namespace Game2048.ViewModels
             squareTranslator = Locator.Current.GetService<ISquareTranslator>();
             squareSpawner = Locator.Current.GetService<ISquareSpawner>();
             gameLostChecker = Locator.Current.GetService<IGameLostChecker>();
-
             dragReader = Locator.Current.GetService<IDragReader>();
-
             board = Locator.Current.GetService<IBoardContainer>();
-            board.Width = board.Height = dimension;
-            board.Score = 0;
-            board.Squares = new ObservableCollection<SquareViewModel>();
+            board.Init(dimension);
 
             squareSpawner.SpawnSquares(2);
 
@@ -148,6 +144,5 @@ namespace Game2048.ViewModels
                 EndGame = true;
             }
         }
-
     }
 }

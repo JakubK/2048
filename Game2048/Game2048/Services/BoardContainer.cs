@@ -29,8 +29,15 @@ namespace Game2048.Services
         }
 
 
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int Width { get; private set; }
+        public int Height { get; private set; }
+
+        public void Init(int dimension)
+        {
+            Width = Height = dimension;
+            Score = 0;
+            Squares = new ObservableCollection<SquareViewModel>();
+        }
     }
 }
 

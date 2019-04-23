@@ -9,8 +9,10 @@ namespace Game2048.Services
     public interface IBoardContainer
     {
         ObservableCollection<SquareViewModel> Squares { get; set; }
-        int Width { get; set; }
-        int Height { get; set; }
+        int Width { get; }
+        int Height { get; }
         int Score { get; set; }
+
+        void Init(int dimension);
     }
 }
