@@ -162,21 +162,45 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\back_icon.png" />
+    <ImageAsset Include="Resources\back_icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\exit_icon.png" />
+    <ImageAsset Include="Resources\exit_icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\github_logo.png" />
+    <ImageAsset Include="Resources\github_logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\left_icon.png" />
+    <ImageAsset Include="Resources\left_icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\replay_icon.png" />
+    <ImageAsset Include="Resources\replay_icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Resources\right_icon.png" />
+    <ImageAsset Include="Resources\right_icon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\P6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\P8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\P3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\P4.png" />
   </ItemGroup>
 </Project>
