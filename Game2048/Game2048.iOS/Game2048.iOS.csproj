@@ -89,6 +89,9 @@
     <CodesignKey>iPhone Distribution</CodesignKey>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Dependencies\CloseApplication.cs" />
     <Compile Include="Main.cs" />
@@ -157,5 +160,23 @@
       <Project>{6E62A621-7F7B-4A70-9024-3525CB838185}</Project>
       <Name>Game2048</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\back_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\exit_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\github_logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\left_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\replay_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ImageAsset Include="Resources\right_icon.png" />
   </ItemGroup>
 </Project>

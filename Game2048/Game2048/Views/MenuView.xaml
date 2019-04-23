@@ -11,14 +11,14 @@
   <StackLayout Padding="10,100,10,30" Spacing="30">
     <BoxView HorizontalOptions="Center" BackgroundColor="White" CornerRadius="5" WidthRequest="200" HeightRequest="200"/>
     <FlexLayout JustifyContent="SpaceAround" AlignItems="Center" Direction="Row">
-      <Button x:Name="leftListBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
+      <ImageButton Padding="10" Source="left_icon.png" x:Name="leftListBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
       <Label FontSize="Large" TextColor="White" x:Name="dimensionLabel"></Label>
-      <Button x:Name="rightListBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
+      <ImageButton Padding="10" Source="right_icon.png" x:Name="rightListBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
     </FlexLayout>
     <Button x:Name="openLevelBtn" CornerRadius="5" BackgroundColor="#00C853" HorizontalOptions="Center" WidthRequest="200" HeightRequest="60" Padding="10" FontSize="Large" TextColor="White" Text="START A GAME"/>
     <StackLayout Margin="10,0,10,0" Spacing="20">
-      <Button x:Name="githubBtn" CornerRadius="5" BackgroundColor="#333333" Padding="10" FontSize="Large" TextColor="White" Text="GITHUB"/>
-      <Button x:Name="closeBtn" CornerRadius="5" BackgroundColor="#D50000" Padding="10" FontSize="Large" TextColor="White" Text="EXIT"/>
+      <Button x:Name="githubBtn" Image="github_logo.png" CornerRadius="5" BackgroundColor="#333333" Padding="10" FontSize="Large" TextColor="White" Text="GITHUB"/>
+      <Button x:Name="closeBtn" Image="exit_icon.png" CornerRadius="5" BackgroundColor="#D50000" Padding="10" FontSize="Large" TextColor="White" Text="EXIT"/>
     </StackLayout>
   </StackLayout>
 </ui:ContentPageBase>

@@ -48,8 +48,8 @@
       </StackLayout>
     </Frame>
     <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
-      <Button x:Name="backMenuBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
-      <Button x:Name="replayBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
+      <ImageButton Padding="10" Source="back_icon.png" x:Name="backMenuBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
+      <ImageButton Padding="10" Source="replay_icon.png" x:Name="replayBtn" BackgroundColor="#333333" WidthRequest="50" HeightRequest="50"/>
     </StackLayout>
   </StackLayout>
 </ui:ContentPageBase>
