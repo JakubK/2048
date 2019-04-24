@@ -149,6 +149,7 @@ namespace Game2048.ViewModels
             }
             if (gameLostChecker.IsLost())
             {
+                await Task.Delay(500);
                 EndGame = true;
             }
         }
