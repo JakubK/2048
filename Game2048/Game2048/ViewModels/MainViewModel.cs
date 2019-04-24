@@ -1,4 +1,5 @@
 ﻿using Game2048.Enums;
+using Game2048.Exceptions;
 using Game2048.Services;
 using Game2048.ViewModels.Base;
 using ReactiveUI;
@@ -117,6 +118,7 @@ namespace Game2048.ViewModels
                     case MoveDirection.None:
                         return;
                 }
+
                 SpawnSquare.Execute().Subscribe();
             });
         }
@@ -138,7 +140,13 @@ namespace Game2048.ViewModels
         {
             await Task.Delay(300);
             if (squareTranslator.ChangeOccured)
-                squareSpawner.SpawnSquares(1);
+            {
+                try
+                {
+                    squareSpawner.SpawnSquares(1);
+                }
+                catch (BoardOutOfSpaceException) { }
+            }
             if (gameLostChecker.IsLost())
             {
                 EndGame = true;
