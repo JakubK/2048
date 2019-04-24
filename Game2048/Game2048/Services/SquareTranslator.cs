@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Game2048.Enums;
@@ -31,9 +32,9 @@ namespace Game2048.Services
         public bool ChangeOccured { get; set; }
         private MoveDirection lastMove;
 
-        public SquareTranslator()
+        public SquareTranslator(IBoardContainer board = null)
         {
-            this.boardContainer = Locator.Current.GetService<IBoardContainer>();
+            this.boardContainer = board ?? Locator.Current.GetService<IBoardContainer>();
             lastMove = MoveDirection.None;
             ChangeOccured = true;
         }
@@ -44,7 +45,6 @@ namespace Game2048.Services
             {
                 if((direction > 0 && lastMove == MoveDirection.Right) || (direction < 0 && lastMove == MoveDirection.Left))
                 {
-                    System.Diagnostics.Debug.WriteLine("No change");
                     return;
                 }
             }
