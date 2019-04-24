@@ -11,9 +11,9 @@ namespace Game2048.Services
     {
         private IBoardContainer boardContainer;
 
-        public GameLostChecker()
+        public GameLostChecker(IBoardContainer board = null)
         {
-            boardContainer = Locator.Current.GetService<IBoardContainer>();
+            boardContainer = board ?? Locator.Current.GetService<IBoardContainer>();
         }
 
         public bool IsLost()
