@@ -33,11 +33,14 @@
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="256">
         <Setter Property="BackgroundColor" Value="#E53935"/>
       </DataTrigger>
+      <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="512">
+        <Setter Property="BackgroundColor" Value="#B71C1C"/>
+      </DataTrigger>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="1024">
-        <Setter Property="BackgroundColor" Value="#E53935"/>
+        <Setter Property="BackgroundColor" Value="#B71C1C"/>
       </DataTrigger>
       <DataTrigger TargetType="Button" Binding="{Binding Value}" Value="2048">
-        <Setter Property="BackgroundColor" Value="#E53935"/>
+        <Setter Property="BackgroundColor" Value="#B71C1C"/>
       </DataTrigger>
     </Button.Triggers>
   </Button>
