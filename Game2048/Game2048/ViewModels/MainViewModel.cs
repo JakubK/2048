@@ -23,6 +23,9 @@ namespace Game2048.ViewModels
 
         private IDragReader dragReader;
 
+        private IScoreReader scoreReader;
+        private IScoreSaver scoreSaver;
+
         private bool endGame;
         public bool EndGame
         {
@@ -56,14 +59,32 @@ namespace Game2048.ViewModels
             gameLostChecker = Locator.Current.GetService<IGameLostChecker>();
             dragReader = Locator.Current.GetService<IDragReader>();
             board = Locator.Current.GetService<IBoardContainer>();
+            scoreSaver = Locator.Current.GetService<IScoreSaver>();
+            scoreReader = Locator.Current.GetService<IScoreReader>();
+
             board.Init(dimension);
 
             squareSpawner.SpawnSquares(2);
 
-            LastMove = MoveDirection.None;
-            if(Application.Current.Properties.ContainsKey(dimension.ToString()))
+            this.WhenAnyValue(x => x.board.Score).Subscribe(x =>
             {
-                BestScore = (int)(Application.Current.Properties[dimension.ToString()]);
+                if(x > BestScore)
+                {
+                    BestScore = x;
+                    scoreSaver.Save(board.Width.ToString(), x);
+                }
+            });
+
+
+            LastMove = MoveDirection.None;
+
+            try
+            {
+                BestScore = scoreReader.Read(dimension.ToString());
+            }
+            catch(Exception)
+            {
+                BestScore = 0;
             }
 
             GoToMenu = ReactiveCommand.Create(() =>

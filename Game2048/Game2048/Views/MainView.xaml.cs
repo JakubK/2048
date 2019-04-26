@@ -56,11 +56,6 @@ namespace Game2048.Views
             this.WhenAny(x => x.ViewModel.board.Score, x => x.Value)
                 .Subscribe(x =>
                 {
-                    if (x > ViewModel.BestScore)
-                    {
-                        ViewModel.BestScore = x;
-                        Application.Current.Properties[ViewModel.board.Width.ToString()] = x;
-                    }
                     pointsLabel.Text = "CURRENT SCORE: " + x;
                 });
 

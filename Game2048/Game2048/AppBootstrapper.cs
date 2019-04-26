@@ -31,6 +31,10 @@ namespace Game2048
 
             Locator.CurrentMutable.Register(() => new DragReader(), typeof(IDragReader));
 
+            Locator.CurrentMutable.Register(() => new ScoreReader(), typeof(IScoreReader));
+            Locator.CurrentMutable.Register(() => new ScoreSaver(), typeof(IScoreSaver));
+
+
             this
                 .Router
                 .NavigateAndReset
