@@ -3,6 +3,7 @@ using Game2048.ViewModels.Base;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 using Xamarin.Forms;
@@ -25,10 +26,10 @@ namespace Game2048.ViewModels
 
             IncrementDimension = ReactiveCommand.Create(() =>
             {
-                if (index < dimensions.Length-1)
+                if (index < Dimensions.Length-1)
                     index++;
 
-                SelectedDimension = dimensions[index];
+                SelectedDimension = Dimensions[index];
             });
 
             DecrementDimension = ReactiveCommand.Create(() =>
@@ -36,7 +37,7 @@ namespace Game2048.ViewModels
                 if (index > 0)
                     index--;
 
-                SelectedDimension = dimensions[index];
+                SelectedDimension = Dimensions[index];
             });
 
             OpenLevel = ReactiveCommand.Create(() =>
@@ -45,15 +46,19 @@ namespace Game2048.ViewModels
             });
 
         }
+        public int[] Dimensions { get; } = new int[] { 3, 4, 6, 8 };
 
-        private int[] dimensions = new int[] { 3, 4, 6, 8 };
         int index = 0;
 
         private int selectedDimension = 3;
         public int SelectedDimension
         {
             get => selectedDimension;
-            set => this.RaiseAndSetIfChanged(ref selectedDimension, value);
+            set 
+             {
+                index = Dimensions.ToList().IndexOf(value);
+                this.RaiseAndSetIfChanged(ref selectedDimension, value);
+             }
         }
 
         public ReactiveCommand<Unit,Unit> IncrementDimension { get; }
