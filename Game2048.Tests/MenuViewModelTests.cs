@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace Game2048.Tests
@@ -13,12 +14,22 @@ namespace Game2048.Tests
         {
             //arrange
             MenuViewModel sut = new MenuViewModel();
-            sut.SelectedDimension = 8;
-            int startVal = sut.SelectedDimension;
+            sut.SelectedDimension = sut.Dimensions[sut.Dimensions.Length - 1];
             //act
-            sut.IncrementDimension.Execute();
+            sut.IncrementDimension.Execute().Subscribe();
             //assert
-            Assert.That(sut.SelectedDimension == 8);
+            Assert.That(sut.SelectedDimension == sut.Dimensions[sut.Dimensions.Length-1]);
+        }
+
+        [Test]
+        public void IncremenetDimension_WhenNotReachedLimit_IncrementsSelectedDimension()
+        {
+            //arrange
+            MenuViewModel sut = new MenuViewModel();
+            //act
+            sut.IncrementDimension.Execute().Subscribe();
+            //assert
+            Assert.That(sut.SelectedDimension != sut.Dimensions[0]);
         }
 
         [Test]
@@ -26,12 +37,23 @@ namespace Game2048.Tests
         {
             //arrange
             MenuViewModel sut = new MenuViewModel();
-            sut.SelectedDimension = 3;
-            int startVal = sut.SelectedDimension;
+            sut.SelectedDimension = sut.Dimensions[0];
             //act
-            sut.DecrementDimension.Execute();
+            sut.DecrementDimension.Execute().Subscribe();
             //assert
-            Assert.That(sut.SelectedDimension == 3);
+            Assert.That(sut.SelectedDimension == sut.Dimensions[0]);
+        }
+
+        [Test]
+        public void DecremenetDimension_WhenNotReachedLimit_DecrementsSelectedDimension()
+        {
+            //arrange
+            MenuViewModel sut = new MenuViewModel();
+            sut.SelectedDimension = sut.Dimensions[sut.Dimensions.Length - 1];
+            //act
+            sut.DecrementDimension.Execute().Subscribe();
+            //assert
+            Assert.That(sut.SelectedDimension != sut.Dimensions[sut.Dimensions.Length-1]);
         }
     }
 }
