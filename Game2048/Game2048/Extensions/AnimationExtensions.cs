@@ -9,7 +9,7 @@ namespace Game2048.Extensions
 {
     public static class AnimationExtensions
     {
-        public static void AnimateHorizontally(this View self, SquareViewModel square, Action<double,bool> finished)
+        public static void AnimateHorizontally(this View self, SquareViewModel square, Action<double,bool> finished = null)
         {
             if(square.X > square.XRequest)
             {
@@ -25,7 +25,7 @@ namespace Game2048.Extensions
             }
         }
 
-        public static void AnimateVertically(this View self, SquareViewModel square, Action<double,bool> finished)
+        public static void AnimateVertically(this View self, SquareViewModel square, Action<double,bool> finished = null)
         {
             if (square.Y > square.YRequest)
             {
