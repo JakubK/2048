@@ -1,4 +1,4 @@
-#2048
+# 2048
 
 A mobile game for smartphones with Android or iOS made by me on Xamarin.Forms.
 I was also using ReactiveUI Framework for implementing MVVM pattern.
