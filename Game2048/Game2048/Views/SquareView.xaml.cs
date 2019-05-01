@@ -1,4 +1,5 @@
-﻿using Game2048.Services;
+﻿using Game2048.Extensions;
+using Game2048.Services;
 using Game2048.ViewModels;
 using ReactiveUI;
 using Splat;
@@ -17,11 +18,6 @@ namespace Game2048.Views
 
         Animation appearAnimation;
 
-        Animation leftAnimation;
-        Animation rightAnimation;
-        Animation topAnimation;
-        Animation bottomAnimation;
-
         public SquareView ()
 		{
 			InitializeComponent ();
@@ -30,17 +26,11 @@ namespace Game2048.Views
             this.OneWayBind(ViewModel, vm => vm.Value, v => v.SquareButton.Text);
 
             appearAnimation = new Animation(v => this.Scale = v, 0, 1);
-
-            leftAnimation = new Animation(v => this.Margin = new Thickness(-v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            rightAnimation = new Animation(v => this.Margin = new Thickness(v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0, -v * this.Width * Math.Abs(ViewModel.X - ViewModel.XRequest), 0), 0, 1);
-            topAnimation = new Animation(v => this.Margin = new Thickness(0, -v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
-            bottomAnimation = new Animation(v => this.Margin = new Thickness(0, v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest), 0, -v * this.Height * Math.Abs(ViewModel.Y - ViewModel.YRequest)), 0, 1);
         }
 
         protected override void OnParentSet()
         {
             base.OnParentSet();
-
             ViewModel.WhenAnyValue(x => x.Appeared).Subscribe(a =>
             {
                 if(a == true)
@@ -61,32 +51,17 @@ namespace Game2048.Views
                     {
                         this.FadeTo(0, 250, Easing.Linear);
                     }
-                    if (a < ViewModel.X)
-                    {
-                        leftAnimation.Commit(this, "LeftAnimation", 16, 250, Easing.Linear, (v, c) =>
-                        {
-                            ViewModel.X = a;
-                            this.Margin = new Thickness(0, 0, 0, 0);
 
-                            if (ViewModel.ToBeRemoved)
-                            {
-                                boardContainer.Squares.Remove(ViewModel);
-                            }
-                        }, () => false);
-                    }
-                    else if(a > ViewModel.X)
-                    {
-                        rightAnimation.Commit(this, "RightAnimation", 16, 250, Easing.Linear, (v, c) =>
-                        {
-                            ViewModel.X = a;
-                            this.Margin = new Thickness(0, 0, 0, 0);
+                    this.AnimateHorizontally(ViewModel, (v, c) =>
+                     {
+                         ViewModel.X = a;
+                         this.Margin = new Thickness(0, 0, 0, 0);
 
-                            if (ViewModel.ToBeRemoved)
-                            {
-                                boardContainer.Squares.Remove(ViewModel);
-                            }
-                        }, () => false);
-                    }
+                         if (ViewModel.ToBeRemoved)
+                         {
+                             boardContainer.Squares.Remove(ViewModel);
+                         }
+                     });
                 }
             });
 
@@ -99,32 +74,16 @@ namespace Game2048.Views
                         this.FadeTo(0, 250, Easing.Linear);
                     }
 
-                    if (a < ViewModel.Y)
-                    {                   
-                        topAnimation.Commit(this, "TopAnimation", 16, 250, Easing.Linear, (v, c) =>
-                        {
-                            ViewModel.Y = a;
-                            this.Margin = new Thickness(0, 0, 0, 0);
-
-                            if (ViewModel.ToBeRemoved)
-                            {
-                                boardContainer.Squares.Remove(ViewModel);
-                            }
-                        }, () => false);
-                    }
-                    else if (a > ViewModel.Y)
+                    this.AnimateVertically(ViewModel, (v, c) =>
                     {
-                        bottomAnimation.Commit(this, "BottomAnimation", 16, 250, Easing.Linear, (v, c) =>
-                        {
-                            ViewModel.Y = a;
-                            this.Margin = new Thickness(0, 0, 0, 0);
+                        ViewModel.Y = a;
+                        this.Margin = new Thickness(0, 0, 0, 0);
 
-                            if (ViewModel.ToBeRemoved)
-                            {
-                                boardContainer.Squares.Remove(ViewModel);
-                            }
-                        }, () => false);
-                    }
+                        if (ViewModel.ToBeRemoved)
+                        {
+                            boardContainer.Squares.Remove(ViewModel);
+                        }
+                    });
                 }
             });
         }
