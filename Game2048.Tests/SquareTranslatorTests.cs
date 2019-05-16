@@ -11,8 +11,9 @@ namespace Game2048.Tests
 {
     public class SquareTranslatorTests
     {
+       
         [Test]
-        public void TranslateHorizontally_WhenNothringChanged_SetsChangeOccuredToFalse()
+        public void TranslateHorizontally_WhenNothingChanged_SetsChangeOccuredToFalse()
         {
             //arrange
             var container = Substitute.For<IBoardContainer>();
@@ -42,6 +43,34 @@ namespace Game2048.Tests
         }
 
         [Test]
+        public void TranslateHorizontally_WhenHorizontalMergePossible_MergesProperly()
+        {
+            //arrange
+            var container = Substitute.For<IBoardContainer>();
+            var sut = new SquareTranslator(container);
+            container.Height.Returns(3);
+            container.Width.Returns(3);
+            container.Squares.Returns(new ObservableCollection<SquareViewModel>()
+            {
+                new SquareViewModel{X = 0, Y = 0, Value = 1},
+                new SquareViewModel{X = 1, Y = 0, Value = 2},
+                new SquareViewModel{X = 2, Y = 0 , Value = 3},
+                new SquareViewModel{X = 0, Y = 1 , Value = 4},
+                new SquareViewModel{X = 1, Y = 1 , Value = 5},
+                new SquareViewModel{X = 2, Y = 1 , Value = 6},
+                new SquareViewModel{X = 0, Y = 2 , Value = 7},
+                new SquareViewModel{X = 1, Y = 2 , Value = 8},
+                new SquareViewModel{X = 2, Y = 2 , Value = 8}
+            });
+
+            //act
+            sut.TranslateHorizontally(1);
+            //assert
+            
+            Assert.That(container.Squares[container.Squares.Count-1].Value == 16);
+        }
+
+        [Test]
         public void TranslateHorizontally_WhenMergedSquares_SetsChangeOccuredToTrue()
         {
             //arrange
@@ -59,7 +88,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 2, Y = 1 , Value = 6},
                 new SquareViewModel{X = 0, Y = 2 , Value = 7},
                 new SquareViewModel{X = 1, Y = 2 , Value = 8},
-                new SquareViewModel{X = 2, Y = 2 , Value = 8},
+                new SquareViewModel{X = 2, Y = 2 , Value = 8}
             });
             //act
             sut.TranslateHorizontally(1);
@@ -87,7 +116,7 @@ namespace Game2048.Tests
         }
 
         [Test]
-        public void TranslateVertically_WhenNothringChanged_SetsChangeOccuredToFalse()
+        public void TranslateVertically_WhenNothingChanged_SetsChangeOccuredToFalse()
         {
             //arrange
             var container = Substitute.For<IBoardContainer>();
@@ -134,12 +163,38 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 2, Y = 1 , Value = 6},
                 new SquareViewModel{X = 0, Y = 2 , Value = 7},
                 new SquareViewModel{X = 1, Y = 2 , Value = 8},
-                new SquareViewModel{X = 2, Y = 2 , Value = 9},
+                new SquareViewModel{X = 2, Y = 2 , Value = 9}
             });
             //act
             sut.TranslateVertically(1);
             //assert
             Assert.That(sut.ChangeOccured);
+        }
+
+        [Test]
+        public void TranslateVertically_WhenVerticalMergePossible_MergesProperly()
+        {
+            //arrange
+            var container = Substitute.For<IBoardContainer>();
+            var sut = new SquareTranslator(container);
+            container.Height.Returns(3);
+            container.Width.Returns(3);
+            container.Squares.Returns(new ObservableCollection<SquareViewModel>()
+            {
+                new SquareViewModel{X = 0, Y = 0, Value = 1},
+                new SquareViewModel{X = 1, Y = 0, Value = 2},
+                new SquareViewModel{X = 2, Y = 0 , Value = 3},
+                new SquareViewModel{X = 0, Y = 1 , Value = 1},
+                new SquareViewModel{X = 1, Y = 1 , Value = 5},
+                new SquareViewModel{X = 2, Y = 1 , Value = 6},
+                new SquareViewModel{X = 0, Y = 2 , Value = 7},
+                new SquareViewModel{X = 1, Y = 2 , Value = 8},
+                new SquareViewModel{X = 2, Y = 2 , Value = 16}
+            });
+            //act
+            sut.TranslateVertically(1);
+            //assert
+            Assert.That(container.Squares[container.Squares.Count-1].Value == 16);
         }
 
         [Test]
