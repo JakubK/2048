@@ -31,11 +31,6 @@ namespace Game2048.Services
             while (i != count)
             {
                 SquareViewModel squareViewModel = new SquareViewModel(random.Next(0, boardContainer.Width), random.Next(0, boardContainer.Height), 2);
-                if (boardContainer.Squares.Count == boardContainer.Width * boardContainer.Height)
-                {
-                    throw new BoardOutOfSpaceException();
-                }
-
                 if (!boardContainer.Squares.Any(x => x.XRequest == squareViewModel.XRequest && x.YRequest == squareViewModel.YRequest))
                 {
                     boardContainer.Squares.Add(squareViewModel);
