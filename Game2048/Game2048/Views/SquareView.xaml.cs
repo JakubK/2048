@@ -20,7 +20,8 @@ namespace Game2048.Views
 
         public SquareView ()
 		{
-			InitializeComponent ();
+			InitializeComponent();
+
             boardContainer = Locator.Current.GetService<IBoardContainer>();
 
             this.OneWayBind(ViewModel, vm => vm.Value, v => v.SquareButton.Text);
@@ -33,12 +34,12 @@ namespace Game2048.Views
             base.OnParentSet();
             ViewModel.WhenAnyValue(x => x.Appeared).Subscribe(a =>
             {
-                if(a == true)
+                if(a == false)
                 {
                     appearAnimation.Commit(this, "Appear", 16, 250, Easing.Linear, (v, c) =>
                     {
                         this.Scale = 1;
-                        ViewModel.Appeared = false;
+                        ViewModel.Appeared = true;
                     }, () => false);
                 }
             });
@@ -48,19 +49,12 @@ namespace Game2048.Views
                 if (a >= 0 && ViewModel.X != a)
                 {
                     if (ViewModel.ToBeRemoved)
-                    {
                         this.FadeTo(0, 250, Easing.Linear);
-                    }
 
                     this.AnimateHorizontally(ViewModel, (v, c) =>
                      {
                          ViewModel.X = a;
                          this.Margin = new Thickness(0, 0, 0, 0);
-
-                         if (ViewModel.ToBeRemoved)
-                         {
-                             boardContainer.Squares.Remove(ViewModel);
-                         }
                      });
                 }
             });
@@ -70,19 +64,12 @@ namespace Game2048.Views
                 if (a >= 0 && ViewModel.Y != a)
                 {
                     if (ViewModel.ToBeRemoved)
-                    {
                         this.FadeTo(0, 250, Easing.Linear);
-                    }
 
                     this.AnimateVertically(ViewModel, (v, c) =>
                     {
                         ViewModel.Y = a;
                         this.Margin = new Thickness(0, 0, 0, 0);
-
-                        if (ViewModel.ToBeRemoved)
-                        {
-                            boardContainer.Squares.Remove(ViewModel);
-                        }
                     });
                 }
             });

@@ -1,8 +1,11 @@
-﻿using Game2048.ViewModels.Base;
+﻿using Game2048.Services;
+using Game2048.ViewModels.Base;
 using ReactiveUI;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Game2048.ViewModels
 {
@@ -66,18 +69,36 @@ namespace Game2048.ViewModels
 
         public SquareViewModel()
         {
-            this.Appeared = true;
+            this.Appeared = false;
         }
+
+        private IBoardContainer board;
 
         public SquareViewModel(int x, int y,int value)
         {
             this.X = x;
             this.Y = y;
             this.Value = value;
-            this.Appeared = true;
+            this.Appeared = false;
 
             this.XRequest = x;
             this.yRequest = y;
+
+            board = Locator.Current.GetService<IBoardContainer>();
+
+            this.WhenAnyValue(t => t.ToBeRemoved).Subscribe(async t =>
+            {
+                if(t == true)
+                {
+                    await RemoveSelf();
+                }
+            });
+        }
+
+        private async Task RemoveSelf()
+        {
+            await Task.Delay(250);
+            board.Squares.Remove(this);
         }
     }
 }
