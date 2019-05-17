@@ -38,6 +38,36 @@ namespace Game2048.Tests
         }
 
         [Test]
+        public void GetDirection_WhenPannedIn2Directions_ReturnsDirectionTypeBasedOnMoreExtremeCoordinate()
+        {
+            //arrange
+            var sut = new DragReader();
+            MoveDirection leftResponse;
+            MoveDirection rightResponse;
+            MoveDirection topResponse;
+            MoveDirection bottomResponse;
+
+            //act
+            sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Started, 0, -100, 80));
+            leftResponse = sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Completed, 0, 0, 0));
+
+            sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Started, 0, 100, -80));
+            rightResponse = sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Completed, 0, 0, 0));
+
+            sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Started, 0, 80, -100));
+            topResponse = sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Completed, 0, 0, 0));
+
+            sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Started, 0, 80, 100));
+            bottomResponse = sut.GetDirection(new PanUpdatedEventArgs(GestureStatus.Completed, 0, 0, 0));
+            //assert
+            Assert.That(leftResponse == MoveDirection.Left);
+            Assert.That(rightResponse == MoveDirection.Right);
+            Assert.That(topResponse == MoveDirection.Top);
+            Assert.That(bottomResponse == MoveDirection.Bottom);
+
+        }
+
+        [Test]
         public void GetDirection_WhenPannedRight_ReturnsRightMoveDirectionType()
         {
             //arrange
