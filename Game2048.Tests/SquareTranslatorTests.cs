@@ -1,4 +1,5 @@
-﻿using Game2048.Services;
+﻿using Game2048.Enums;
+using Game2048.Services;
 using Game2048.ViewModels;
 using NSubstitute;
 using NUnit.Framework;
@@ -33,10 +34,10 @@ namespace Game2048.Tests
                 new SquareViewModel(2,2,9)
             });
             //act
-            sut.TranslateHorizontally(1);
+            sut.TranslateHorizontally(MoveDirection.Right);
             bool rightChangeOccured = sut.ChangeOccured;
 
-            sut.TranslateHorizontally(-1);
+            sut.TranslateHorizontally(MoveDirection.Left);
             bool leftChangeOccured = sut.ChangeOccured;
             //assert
             Assert.That(!leftChangeOccured && !rightChangeOccured);
@@ -64,7 +65,7 @@ namespace Game2048.Tests
             });
 
             //act
-            sut.TranslateHorizontally(1);
+            sut.TranslateHorizontally(MoveDirection.Right);
             //assert
             
             Assert.That(container.Squares[container.Squares.Count-1].Value == 16);
@@ -91,7 +92,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 2, Y = 2 , Value = 8}
             });
             //act
-            sut.TranslateHorizontally(1);
+            sut.TranslateHorizontally(MoveDirection.Right);
             //assert
             Assert.That(sut.ChangeOccured);
         }
@@ -110,7 +111,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 1, Y = 1, Value = 2}
             });
             //act
-            sut.TranslateHorizontally(1);
+            sut.TranslateHorizontally(MoveDirection.Right);
             //assert
             Assert.That(sut.ChangeOccured);
         }
@@ -136,10 +137,10 @@ namespace Game2048.Tests
                 new SquareViewModel(2,2,9)
             });
             //act
-            sut.TranslateVertically(1);
+            sut.TranslateVertically(MoveDirection.Bottom);
             bool bottomChangeOccured = sut.ChangeOccured;
 
-            sut.TranslateVertically(-1);
+            sut.TranslateVertically(MoveDirection.Top);
             bool topChangeOccured = sut.ChangeOccured;
             //assert
             Assert.That(!bottomChangeOccured && !topChangeOccured);
@@ -166,7 +167,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 2, Y = 2 , Value = 9}
             });
             //act
-            sut.TranslateVertically(1);
+            sut.TranslateVertically(MoveDirection.Bottom);
             //assert
             Assert.That(sut.ChangeOccured);
         }
@@ -192,7 +193,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 2, Y = 2 , Value = 16}
             });
             //act
-            sut.TranslateVertically(1);
+            sut.TranslateVertically(MoveDirection.Bottom);
             //assert
             Assert.That(container.Squares[container.Squares.Count-1].Value == 16);
         }
@@ -211,7 +212,7 @@ namespace Game2048.Tests
                 new SquareViewModel{X = 1, Y = 1, Value = 2}
             });
             //act
-            sut.TranslateVertically(1);
+            sut.TranslateVertically(MoveDirection.Bottom);
             //assert
             Assert.That(sut.ChangeOccured);
         }

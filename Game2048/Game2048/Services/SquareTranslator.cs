@@ -39,11 +39,11 @@ namespace Game2048.Services
             ChangeOccured = true;
         }
 
-        public void TranslateHorizontally(int direction)
+        public void TranslateHorizontally(MoveDirection direction)
         {
             if(!ChangeOccured)
             {
-                if((direction > 0 && lastMove == MoveDirection.Right) || (direction < 0 && lastMove == MoveDirection.Left))
+                if((direction == MoveDirection.Right && lastMove == MoveDirection.Right) || (direction == MoveDirection.Left && lastMove == MoveDirection.Left))
                 {
                     return;
                 }
@@ -53,17 +53,17 @@ namespace Game2048.Services
             var rows = Squares.GroupBy(r => r.Y).ToList();
             foreach (var row in rows)
             {
-                if (direction < 0)
+                if (direction == MoveDirection.Left)
                     PushRow(row.OrderBy(x => x.X).ToList(), direction);
                 else
                     PushRow(row.OrderByDescending(x => x.X).ToList(), direction);
             }
         }
 
-        private void PushRow(List<SquareViewModel> row, int direction)
+        private void PushRow(List<SquareViewModel> row, MoveDirection direction)
         {
             int pos = 0;
-            int desiredX = direction > 0 ? (Width - 1) : 0;
+            int desiredX = direction == MoveDirection.Right ? (Width - 1) : 0;
             if(desiredX != row[0].XRequest)
             {
                 row[0].XRequest = desiredX;
@@ -80,7 +80,7 @@ namespace Game2048.Services
                     row[pos].CreatedInThisTurn = true;
 
                     Squares.ElementAt(Squares.IndexOf(row[i])).ToBeRemoved = true;
-                    row[i].XRequest = direction > 0 ? (Width - 1) - pos : pos;
+                    row[i].XRequest = direction == MoveDirection.Right ? (Width - 1) - pos : pos;
                     row.RemoveAt(i);
 
                     i--;
@@ -90,7 +90,7 @@ namespace Game2048.Services
                 else
                 {
                     pos++;
-                    desiredX = direction > 0 ? (Width - 1) - pos : pos;
+                    desiredX = direction == MoveDirection.Right ? (Width - 1) - pos : pos;
                     if(desiredX != row[i].XRequest)
                     {
                         row[i].XRequest = desiredX;
@@ -104,16 +104,15 @@ namespace Game2048.Services
                 item.CreatedInThisTurn = false;
             }
 
-            lastMove = direction > 0 ? MoveDirection.Right : MoveDirection.Left;
+            lastMove = direction;
         }
 
-        public void TranslateVertically(int direction)
+        public void TranslateVertically(MoveDirection direction)
         {
             if (!ChangeOccured)
             {
-                if ((direction > 0 && lastMove == MoveDirection.Bottom) || (direction < 0 && lastMove == MoveDirection.Top))
+                if ((direction == MoveDirection.Bottom && lastMove == MoveDirection.Bottom) || (direction == MoveDirection.Top && lastMove == MoveDirection.Top))
                 {
-                    System.Diagnostics.Debug.WriteLine("No change");
                     return;
                 }
             }
@@ -122,17 +121,17 @@ namespace Game2048.Services
             var cols = Squares.GroupBy(r => r.X).ToList();
             foreach (var col in cols)
             {
-                if (direction < 0)
+                if (direction == MoveDirection.Top)
                     PushCol(col.OrderBy(x => x.Y).ToList(), direction);
                 else
                     PushCol(col.OrderByDescending(x => x.Y).ToList(), direction);
             }
         }
 
-        private void PushCol(List<SquareViewModel> col, int direction)
+        private void PushCol(List<SquareViewModel> col, MoveDirection direction)
         {
             int pos = 0;
-            int desiredY = direction > 0 ? (Height - 1) : 0;
+            int desiredY = direction == MoveDirection.Bottom ? (Height - 1) : 0;
             if(desiredY != col[0].Y)
             {
                 col[0].YRequest = desiredY;
@@ -148,7 +147,7 @@ namespace Game2048.Services
                     col[pos].CreatedInThisTurn = true;
 
                     Squares.ElementAt(Squares.IndexOf(col[i])).ToBeRemoved = true;
-                    col[i].YRequest = direction > 0 ? (Height - 1) - pos : pos;
+                    col[i].YRequest = direction == MoveDirection.Bottom ? (Height - 1) - pos : pos;
                     col.RemoveAt(i);
 
                     i--;
@@ -157,7 +156,7 @@ namespace Game2048.Services
                 else
                 {
                     pos++;
-                    desiredY = direction > 0 ? (Height - 1) - pos : pos;
+                    desiredY = direction == MoveDirection.Bottom ? (Height - 1) - pos : pos;
                     if(desiredY != col[i].YRequest)
                     {
                         col[i].YRequest = desiredY;
@@ -171,7 +170,7 @@ namespace Game2048.Services
                 item.CreatedInThisTurn = false;
             }
 
-            lastMove = direction > 0 ? MoveDirection.Bottom : MoveDirection.Top;
+            lastMove = direction;
         }
     }
 }

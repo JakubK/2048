@@ -99,22 +99,22 @@ namespace Game2048.ViewModels
 
             MoveLeft = ReactiveCommand.Create(() => 
             {
-                squareTranslator.TranslateHorizontally(-1);
+                squareTranslator.TranslateHorizontally(MoveDirection.Left);
             });
 
             MoveRight = ReactiveCommand.Create(() =>
             {
-                squareTranslator.TranslateHorizontally(1);
+                squareTranslator.TranslateHorizontally(MoveDirection.Right);
             });
 
             MoveUp = ReactiveCommand.Create(() =>
             {
-                squareTranslator.TranslateVertically(-1);
+                squareTranslator.TranslateVertically(MoveDirection.Top);
             });
 
             MoveDown = ReactiveCommand.Create(() =>
             {
-                squareTranslator.TranslateVertically(1);
+                squareTranslator.TranslateVertically(MoveDirection.Bottom);
             });
 
             SpawnSquare = ReactiveCommand.CreateFromTask(SpawnSquareTask);
